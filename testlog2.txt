@@ -1,0 +1,20 @@
+********* Start testing of QmlTestServiceTests *********
+Config: Using QtTest library 6.10.1, Qt 6.10.1 (x86_64-little_endian-llp64 shared (dynamic) debug build; by MSVC 2022), windows 11
+QWARN  : QmlTestServiceTests::tst_testservice::compile() 
+  E:\GitHub\sst\tests\qml\services\testservice\tst_testservice.qml produced 1 error(s):
+    E:\GitHub\sst\tests\qml\services\testservice\tst_testservice.qml:3,1: module "testservice" plugin "testserviceplugin" not found
+  Working directory: E:\GitHub\sst
+  Import paths:
+    'E:\GitHub\sst\build\src\services'
+    'E:\GitHub\sst\build\src'
+    'E:\GitHub\sst\build\Debug'
+    'qrc:\qt-project.org\imports'
+    'qrc:\qt\qml'
+    'C:\Qt\6.10.1\msvc2022_64\qml'
+  Plugin paths:
+    '.'
+
+FAIL!  : QmlTestServiceTests::tst_testservice::compile() module "testservice" plugin "testserviceplugin" not found
+E:\GitHub\sst\tests\qml\services\testservice\tst_testservice.qml(3) : failure location
+Totals: 0 passed, 1 failed, 0 skipped, 0 blacklisted, 5ms
+********* Finished testing of QmlTestServiceTests *********

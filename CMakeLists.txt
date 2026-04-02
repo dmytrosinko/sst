@@ -15,7 +15,7 @@ qt_standard_project_setup(REQUIRES 6.10)
 
 enable_testing()
 add_subdirectory(src)
-#add_subdirectory(testservice)
+add_subdirectory(tests)
 
 
 # Packaging (optional)

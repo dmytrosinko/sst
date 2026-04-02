@@ -122,3 +122,43 @@ Image {
 ```
 
 This enforces compile-time or parser-time tracking of asset mapping rules, ensuring that renamed or missing files are caught at a single point of failure.
+
+---
+
+## 4. Testing & Quality Assurance
+
+To ensure system stability, **every new functional addition (C++ logic or QML UI component) MUST be covered by dedicated unit or integration tests.**
+
+### 4.1 Strict 1:1 Mapping Rule
+The test structure mirrors the source framework explicitly. For every single `.cpp` or `.qml` file created under `src/`, there MUST be an accompanying `tst_[filename]` test file mapped correctly under the `tests/` directory.
+
+- `src/modules/controls/qml/Button.qml` **must** have `tests/qml/modules/controls/tst_Button.qml`
+- `src/services/testservice/ServiceModel.cpp` **must** have `tests/cpp/services/testservice/tst_ServiceModel.cpp`
+
+### 4.2 Adding C++ Tests
+1. Create your test file prefixed with `tst_` (e.g., `tst_YourClass.cpp`) under `tests/cpp/`.
+2. Inside your C++ test, formulate a `QObject` testing subclass utilizing `QTEST_GUILESS_MAIN(Tst_YourClass)`.
+3. Open `tests/cpp/CMakeLists.txt` and append your testing filename directly structurally to the module's `qt_add_executable` definition.
+    ```cmake
+    qt_add_executable(cpp_tst_mymodule 
+        modules/mymodule/tst_YourClass.cpp
+    )
+    ```
+
+### 4.3 Adding QML Component Tests
+1. Create your explicit layout test prefixed with `tst_` (e.g., `tst_YourComponent.qml`) securely within `tests/qml/`.
+2. Use Qt Quick `TestCase` to assign explicit simulated validation parameters avoiding relative native bounds errors:
+    ```qml
+    import QtQuick
+    import QtTest
+    
+    TestCase {
+        name: "tst_YourComponent"
+        width: 200; height: 200;
+        
+        function test_evaluation() {
+            verify(true, "Components evaluated natively!")
+        }
+    }
+    ```
+3. Open `tests/qml/CMakeLists.txt` and append your `.qml` stub strictly inside the matching `qt_add_executable()` source bounds natively. This explicitly forces QtCreator to detect and list your visual integration test!

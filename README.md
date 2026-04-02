@@ -43,17 +43,24 @@ A **Self Service Terminal** application built with **Qt**, **C++**, and **CMake*
 
 ## Project Structure
 
-```
-SelfServiceTerminal/
-├─ CMakeLists.txt          # Top‑level CMake configuration
-├─ src/                    # C++ source files
-│   ├─ main.cpp
-│   └─ ...
-├─ ui/                     # QML UI files (if using Qt Quick)
-│   └─ Main.qml
-├─ resources/              # Images, fonts, etc.
-├─ docs/                   # Documentation, screenshots
-└─ README.md               # This file
+```text
+sst/
+├── CMakeLists.txt          # Top‑level CMake configuration
+├── src/                    # Core source code and QML entry points
+│   ├── CMakeLists.txt      # Binds core executable and submodules
+│   ├── main.cpp            # C++ bootstrapping engine
+│   ├── Main.qml            # Primary layout wrapper 
+│   ├── TranslationManager.*# Global C++ Translation singleton
+│   ├── modules/            # Independent plugins (UI controls, hardware integration)
+│   ├── services/           # Stateful user-facing workflows (e.g., testservice)
+│   └── translations/       # Auto-generated qt_add_translation dictionaries (.ts)
+├── tests/                  # 1:1 Explicit Unit and Integration Tests
+│   ├── cpp/                # C++ Logic execution evaluators using QtTest
+│   └── qml/                # QML UI bound execution evaluators using QtQuickTest
+├── doc/                    # Documentation and contribution standards
+│   ├── ARCHITECTURE.md     # Core module architectural strategies
+│   └── CONTRIBUTING.md     # Setup, coding, and localization guidelines
+└── README.md
 ```
 
 ---

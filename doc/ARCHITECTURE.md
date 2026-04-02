@@ -76,3 +76,13 @@ While Services handle direct user-facing workflows, generalized features that ru
 - URIs evaluate dynamically to: `modules.[module name]`.
 
 By strictly separating terminal logic into **Modules** (tools/features) and **Services** (user workflows), the SST architecture remains scalable and testable.
+
+---
+
+## 4. Testing Architecture (CTest & QtTest)
+
+To ensure regressions do not bleed into the isolated components natively, the testing boundaries map dynamically across CTest utilizing:
+
+- **1:1 File Segregation**: Every source file has a perfectly isolated `tst_[filename]` counterpart.
+- **GUI-Less Isolation**: C++ structural behaviors bind entirely to `QTEST_GUILESS_MAIN` natively explicitly avoiding system interaction rendering timeouts seamlessly across Linux or Windows headless builds natively!
+- **Componentized View Bounds**: QML evaluates simulated UI constraints by implicitly isolating bounds properties (`width/height`) directly against component wrappers mapped within `qt_add_executable()` natively avoiding Window execution constraints!
