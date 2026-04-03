@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="kk" sourcelanguage="en">
+<TS version="2.1" language="ky" sourcelanguage="en">
 <context>
     <name>HardwareInfo</name>
     <message>
         <location filename="modules/hardware/qml/HardwareInfo.qml" line="25"/>
         <source>Hardware Status</source>
-        <translation>Аппараттық құрал күйі</translation>
+        <translation>Аппараттык абалы</translation>
     </message>
     <message>
         <location filename="modules/hardware/qml/HardwareInfo.qml" line="36"/>
         <source>CPU Usage:</source>
-        <translation>ЦП пайдалану:</translation>
+        <translation>ЦП колдонуу:</translation>
     </message>
     <message>
         <location filename="modules/hardware/qml/HardwareInfo.qml" line="39"/>
         <source>Total RAM:</source>
-        <translation>Жалпы ЖЖҚ:</translation>
+        <translation>Жалпы ОЭС:</translation>
     </message>
     <message>
         <location filename="modules/hardware/qml/HardwareInfo.qml" line="42"/>
         <source>Avail RAM:</source>
-        <translation>Қолжетімді ЖЖҚ:</translation>
+        <translation>Жеткиликтүү ОЭС:</translation>
     </message>
     <message>
         <location filename="modules/hardware/qml/HardwareInfo.qml" line="45"/>
@@ -39,7 +39,7 @@
     <message>
         <location filename="Main.qml" line="47"/>
         <source>Start Service</source>
-        <translation>Қызметті бастау</translation>
+        <translation>Кызматты баштоо</translation>
     </message>
 </context>
 <context>
@@ -47,17 +47,17 @@
     <message>
         <location filename="services/testservice/qml/Screen1.qml" line="17"/>
         <source>Enter number...</source>
-        <translation>Нөмірді енгізіңіз...</translation>
+        <translation>Санды киргизиңиз...</translation>
     </message>
     <message>
         <location filename="services/testservice/qml/Screen1.qml" line="26"/>
         <source>Quit</source>
-        <translation>Шығу</translation>
+        <translation>Чыгуу</translation>
     </message>
     <message>
         <location filename="services/testservice/qml/Screen1.qml" line="31"/>
         <source>Next</source>
-        <translation>Келесі</translation>
+        <translation>Кийинки</translation>
     </message>
 </context>
 <context>
@@ -65,17 +65,17 @@
     <message>
         <location filename="services/testservice/qml/Screen2.qml" line="15"/>
         <source>Enter string...</source>
-        <translation>Жолды енгізіңіз...</translation>
+        <translation>Сапты киргизиңиз...</translation>
     </message>
     <message>
         <location filename="services/testservice/qml/Screen2.qml" line="23"/>
         <source>Back</source>
-        <translation>Артқа</translation>
+        <translation>Артка</translation>
     </message>
     <message>
         <location filename="services/testservice/qml/Screen2.qml" line="28"/>
         <source>Next</source>
-        <translation>Келесі</translation>
+        <translation>Кийинки</translation>
     </message>
 </context>
 <context>
@@ -83,12 +83,12 @@
     <message>
         <location filename="services/testservice/qml/Screen3.qml" line="17"/>
         <source>Thank you</source>
-        <translation>Рақмет</translation>
+        <translation>Рахмат</translation>
     </message>
     <message>
         <location filename="services/testservice/qml/Screen3.qml" line="25"/>
         <source>Go to Main</source>
-        <translation>Басты бетке өту</translation>
+        <translation>Башкы бетке өтүү</translation>
     </message>
 </context>
 </TS>

@@ -17,21 +17,21 @@ bool TranslationManager::isEnglish() const
 void TranslationManager::toggleLanguage()
 {
     if (m_isEn) {
-        // Switch to Kazakh
+        // Switch to Kyrgyz
         bool loaded = false;
-        if (m_translator.load(":/i18n/sst_kk.qm")) {
+        if (m_translator.load(":/i18n/sst_ky.qm")) {
             loaded = true;
-        } else if (m_translator.load("translations/sst_kk.qm")) {
+        } else if (m_translator.load("translations/sst_ky.qm")) {
             loaded = true;
-        } else if (m_translator.load("sst_kk.qm", ":/i18n/")) {
+        } else if (m_translator.load("sst_ky.qm", ":/i18n/")) {
             loaded = true;
         }
 
         if (loaded) {
-            qDebug() << "Successfully loaded Kazakh translator.";
+            qDebug() << "Successfully loaded Kyrgyz translator.";
             QCoreApplication::installTranslator(&m_translator);
         } else {
-            qWarning() << "Failed to load Kazakh translation dictionary!";
+            qWarning() << "Failed to load Kyrgyz translation dictionary!";
         }
     } else {
         // Revert to English (default source)

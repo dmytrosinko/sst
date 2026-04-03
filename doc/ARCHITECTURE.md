@@ -79,7 +79,61 @@ By strictly separating terminal logic into **Modules** (tools/features) and **Se
 
 ---
 
-## 4. Testing Architecture (CTest & QtTest)
+## 4. Style & Theming Architecture
+
+All visual tokens (colors, font sizes) are centralized in the **`modules.style`** QML module located at `src/modules/style/`. This eliminates hardcoded color strings scattered across QML files and enables future theme switching.
+
+### Module Layout
+
+```text
+src/modules/style/
+├── CMakeLists.txt          # Registers both singletons; URI = modules.style
+└── qml/
+    ├── Style.qml           # Root singleton — the single import consumers use
+    └── DarkStyle.qml       # Concrete theme — all Nord-palette design tokens
+```
+
+### How It Works
+
+1. **`DarkStyle.qml`** — a `pragma Singleton` `QtObject` that declares every design token used across the application as `readonly property` values:
+
+   | Category | Properties |
+   |----------|-----------|
+   | **Backgrounds** | `background`, `surfacePrimary`, `surfaceSecondary`, `surfaceHover`, `surfacePressed` |
+   | **Borders** | `borderDefault`, `borderAccent`, `borderStrong` |
+   | **Text** | `textPrimary`, `textSecondary`, `textOnAccent`, `textHeading` |
+   | **Accent / Status** | `accentPrimary`, `accentSecondary`, `statusSuccess`, `statusWarning` |
+   | **Typography** | `fontSizeSmall` (14), `fontSizeNormal` (16), `fontSizeLarge` (18), `fontSizeXLarge` (24) |
+
+2. **`Style.qml`** — a `pragma Singleton` `QtObject` that exposes a single `currentStyle` property pointing to a `DarkStyle` instance. All consumer code references `Style.currentStyle.*`, keeping one clean indirection layer for future theme switching.
+
+3. **Consumer usage** — any QML file that needs a color or font size imports the module and reads the token:
+
+   ```qml
+   import modules.style
+
+   Rectangle {
+       color: Style.currentStyle.surfacePrimary
+       border.color: Style.currentStyle.borderAccent
+
+       Text {
+           color: Style.currentStyle.textPrimary
+           font.pixelSize: Style.currentStyle.fontSizeNormal
+       }
+   }
+   ```
+
+### Adding a New Theme
+
+To create an alternative theme (e.g., `LightStyle`):
+
+1. Add `qml/LightStyle.qml` as a `pragma Singleton` `QtObject` with the **same property names** but different values.
+2. Register it in `CMakeLists.txt` with `QT_QML_SINGLETON_TYPE TRUE`.
+3. Update `Style.qml` to switch `currentStyle` between `DarkStyle` and `LightStyle` based on user preference or configuration.
+
+---
+
+## 5. Testing Architecture (CTest & QtTest)
 
 To ensure regressions do not bleed into the isolated components natively, the testing boundaries map dynamically across CTest utilizing:
 

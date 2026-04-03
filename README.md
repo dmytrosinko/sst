@@ -49,9 +49,15 @@ sst/
 ├── src/                    # Core source code and QML entry points
 │   ├── CMakeLists.txt      # Binds core executable and submodules
 │   ├── main.cpp            # C++ bootstrapping engine
-│   ├── Main.qml            # Primary layout wrapper 
+│   ├── Main.qml            # Primary layout wrapper
 │   ├── TranslationManager.*# Global C++ Translation singleton
-│   ├── modules/            # Independent plugins (UI controls, hardware integration)
+│   ├── modules/            # Independent plugins
+│   │   ├── controls/       # Reusable UI controls (Button, TextField, TextArea)
+│   │   ├── hardware/       # Hardware integration (CPU, RAM, FPS)
+│   │   └── style/          # Theming & design tokens
+│   │       └── qml/
+│   │           ├── Style.qml      # Singleton – exposes currentStyle
+│   │           └── DarkStyle.qml  # Singleton – Nord palette colors & fonts
 │   ├── services/           # Stateful user-facing workflows (e.g., testservice)
 │   └── translations/       # Auto-generated qt_add_translation dictionaries (.ts)
 ├── tests/                  # 1:1 Explicit Unit and Integration Tests

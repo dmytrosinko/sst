@@ -15,7 +15,7 @@ Item {
         Text {
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("Thank you")
-            color: "#ECEFF4"
+            color: "#000000"
             font.pixelSize: 24
             font.bold: true
         }
