@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Roof / pediment -->
+  <polyline points="10,28 32,12 54,28" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Base -->
+  <line x1="10" y1="48" x2="54" y2="48" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Top beam -->
+  <line x1="10" y1="28" x2="54" y2="28" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Columns -->
+  <line x1="18" y1="28" x2="18" y2="48" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="28" y1="28" x2="28" y2="48" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="36" y1="28" x2="36" y2="48" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="46" y1="28" x2="46" y2="48" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Foundation -->
+  <rect x="8" y="48" width="48" height="4" rx="1" stroke="white" stroke-width="1.5"/>
+</svg>

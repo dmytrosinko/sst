@@ -1,18 +1,12 @@
-cmake_minimum_required(VERSION 3.16)
 project(sst-app VERSION 0.1 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-
 find_package(Qt6 REQUIRED COMPONENTS Gui Quick LinguistTools)
-qt_standard_project_setup(REQUIRES 6.10)
 
 add_subdirectory(modules/hardware)
 add_subdirectory(modules/controls)
 add_subdirectory(modules/style)
+add_subdirectory(modules/ui)
+add_subdirectory(modules/services)
 add_subdirectory(services/testservice)
 
 qt_add_executable(${PROJECT_NAME}
@@ -26,13 +20,30 @@ qt_add_qml_module(${PROJECT_NAME}
         TranslationManager.cpp
     QML_FILES
         Main.qml
+    RESOURCES
+        assets/logo.svg
+        assets/icon_category.svg
+        assets/icon_service.svg
+        assets/icons/1.svg
+        assets/icons/2.svg
+        assets/icons/3.svg
+        assets/icons/4.svg
+        assets/icons/default.svg
+        assets/icons/back_arrow.svg
+        assets/icons/icon_card.svg
+        assets/icons/icon_phone.svg
+        assets/icons/icon_iban.svg
+        assets/icons/icon_number.svg
+        assets/icons/icon_string.svg
+        assets/services.json
 )
 
 qt_add_translations(${PROJECT_NAME}
     TS_FILES
         translations/sst_en.ts
         translations/sst_ky.ts
-    SOURCE_TARGETS ${PROJECT_NAME} hardware controls style testservice
+        translations/sst_ru.ts
+    SOURCE_TARGETS ${PROJECT_NAME} hardware controls style ui services testservice
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -44,7 +55,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 
 target_link_libraries(${PROJECT_NAME}
-    PRIVATE Qt6::Quick Qt6::Gui hardwareplugin controlsplugin styleplugin testserviceplugin
+    PRIVATE Qt6::Quick Qt6::Gui hardwareplugin controlsplugin styleplugin uiplugin servicesplugin testserviceplugin
 )
 
 include(GNUInstallDirs)

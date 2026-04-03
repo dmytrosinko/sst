@@ -3,26 +3,26 @@ import QtQuick
 
 QtObject {
     // ── Background colors ──
-    readonly property color background:         "#D8DEE9"   // Window/page background
-    readonly property color surfacePrimary:     "#2E3440"   // Cards, panels, input fields
-    readonly property color surfaceSecondary:   "#3B4252"   // Elevated surfaces, button default
-    readonly property color surfaceHover:       "#434C5E"   // Hovered interactive surfaces
-    readonly property color surfacePressed:     "#4C566A"   // Pressed interactive surfaces
+    readonly property color background:         "#000000"   // Window/page background (Header black)
+    readonly property color surfacePrimary:     "#0A0A0F"   // Cards, panels, tiles
+    readonly property color surfaceSecondary:   "#141419"   // Elevated surfaces, button default
+    readonly property color surfaceHover:       "#1E1E28"   // Hovered interactive surfaces
+    readonly property color surfacePressed:     "#2A2A38"   // Pressed interactive surfaces
 
     // ── Border / outline colors ──
-    readonly property color borderDefault:      "#4C566A"   // Default border
-    readonly property color borderAccent:       "#88C0D0"   // Focused / accent border
-    readonly property color borderStrong:       "#2E3440"   // Strong/dark border
+    readonly property color borderDefault:      "#808090"   // Default border (bright)
+    readonly property color borderAccent:       "#9B8EC4"   // Focused / accent border (LanguageToggle purple)
+    readonly property color borderStrong:       "#000000"   // Strong/dark border
 
     // ── Text colors ──
     readonly property color textPrimary:        "#ECEFF4"   // Main text on dark surfaces
-    readonly property color textSecondary:      "#D8DEE9"   // Secondary / label text
-    readonly property color textOnAccent:       "#2E3440"   // Text on accent/hovered buttons
-    readonly property color textHeading:        "#8FBCBB"   // Section headings
+    readonly property color textSecondary:      "#A0A0B0"   // Secondary / label text
+    readonly property color textOnAccent:       "#FFFFFF"   // Text on accent/hovered buttons
+    readonly property color textHeading:        "#B0A4D4"   // Section headings (light purple)
 
     // ── Accent / status colors ──
-    readonly property color accentPrimary:      "#88C0D0"   // Primary accent (frost)
-    readonly property color accentSecondary:    "#81A1C1"   // Selection highlight
+    readonly property color accentPrimary:      "#9B8EC4"   // Primary accent (LanguageToggle purple)
+    readonly property color accentSecondary:    "#8578B0"   // Pressed accent
     readonly property color statusSuccess:      "#A3BE8C"   // Positive / success values
     readonly property color statusWarning:      "#EBCB8B"   // Warning / attention values
 
@@ -32,3 +32,4 @@ QtObject {
     readonly property int fontSizeLarge:        18
     readonly property int fontSizeXLarge:       24
 }
+

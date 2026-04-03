@@ -5,41 +5,67 @@
 #include <QtQml>
 
 TranslationManager::TranslationManager(QObject *parent)
-    : QObject(parent), m_isEn(true)
+    : QObject(parent), m_currentLang(QStringLiteral("en"))
 {
+}
+
+QString TranslationManager::currentLanguage() const
+{
+    return m_currentLang;
 }
 
 bool TranslationManager::isEnglish() const
 {
-    return m_isEn;
+    return m_currentLang == QLatin1String("en");
+}
+
+void TranslationManager::setLanguage(const QString &langCode)
+{
+    if (m_currentLang == langCode)
+        return;
+
+    applyLanguage(langCode);
 }
 
 void TranslationManager::toggleLanguage()
 {
-    if (m_isEn) {
-        // Switch to Kyrgyz
+    // Cycle: en → ky → ru → en
+    if (m_currentLang == QLatin1String("en"))
+        applyLanguage(QStringLiteral("ky"));
+    else if (m_currentLang == QLatin1String("ky"))
+        applyLanguage(QStringLiteral("ru"));
+    else
+        applyLanguage(QStringLiteral("en"));
+}
+
+void TranslationManager::applyLanguage(const QString &langCode)
+{
+    // Remove any existing translator first
+    QCoreApplication::removeTranslator(&m_translator);
+
+    if (langCode != QLatin1String("en")) {
+        const QString fileName = QStringLiteral("sst_") + langCode;
         bool loaded = false;
-        if (m_translator.load(":/i18n/sst_ky.qm")) {
+
+        if (m_translator.load(QStringLiteral(":/i18n/") + fileName + QStringLiteral(".qm"))) {
             loaded = true;
-        } else if (m_translator.load("translations/sst_ky.qm")) {
+        } else if (m_translator.load(fileName + QStringLiteral(".qm"), QStringLiteral(":/i18n/"))) {
             loaded = true;
-        } else if (m_translator.load("sst_ky.qm", ":/i18n/")) {
+        } else if (m_translator.load(QStringLiteral("translations/") + fileName + QStringLiteral(".qm"))) {
             loaded = true;
         }
 
         if (loaded) {
-            qDebug() << "Successfully loaded Kyrgyz translator.";
+            qDebug() << "Loaded translator for" << langCode;
             QCoreApplication::installTranslator(&m_translator);
         } else {
-            qWarning() << "Failed to load Kyrgyz translation dictionary!";
+            qWarning() << "Failed to load translation for" << langCode;
         }
     } else {
-        // Revert to English (default source)
-        qDebug() << "Removing translator (reverting to English).";
-        QCoreApplication::removeTranslator(&m_translator);
+        qDebug() << "Reverted to English (source).";
     }
-    
-    m_isEn = !m_isEn;
+
+    m_currentLang = langCode;
     emit languageChanged();
 
     QQmlEngine *engine = qmlEngine(this);

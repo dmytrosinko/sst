@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "name": "Payments",
+        "services": [
+            { "id": 101, "inputType": "phone",   "name": "Mobile Top-Up" },
+            { "id": 102, "inputType": "iban",    "name": "Bank Transfer" },
+            { "id": 103, "inputType": "account", "name": "Account Payment" }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Transfers",
+        "services": [
+            { "id": 201, "inputType": "iban", "name": "SWIFT Transfer" },
+            { "id": 202, "inputType": "iban", "name": "Internal Transfer" }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Mobile",
+        "services": [
+            { "id": 301, "inputType": "phone",   "name": "Mobile Balance" },
+            { "id": 302, "inputType": "phone",   "name": "Mobile Internet" },
+            { "id": 303, "inputType": "default", "name": "SIM Registration" }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Utilities",
+        "services": [
+            { "id": 401, "inputType": "account", "name": "Electricity" },
+            { "id": 402, "inputType": "account", "name": "Water" },
+            { "id": 403, "inputType": "default", "name": "Gas" }
+        ]
+    }
+]

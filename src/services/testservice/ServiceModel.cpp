@@ -1,37 +1,45 @@
 #include "ServiceModel.h"
-
-using namespace test;
+#include "../../modules/services/ServiceTreeItem.h"
 
 namespace test {
 
+// Use the enum from ServiceTreeItem to avoid magic numbers
+static constexpr int kDefaultInputType = static_cast<int>(services::InputType::Default);
+
 ServiceModel::ServiceModel(QObject *parent)
-    : QObject(parent), m_currentScreen(0)
+    : QObject(parent)
 {
 }
 
-int ServiceModel::currentScreen() const
+int ServiceModel::serviceId() const
 {
-    return m_currentScreen;
+    return m_serviceId;
 }
 
-void ServiceModel::goToScreen(int screenIndex)
+QString ServiceModel::serviceName() const
 {
-    if (m_currentScreen != screenIndex) {
-        m_currentScreen = screenIndex;
-        emit currentScreenChanged();
-    }
+    return m_serviceName;
 }
 
-void ServiceModel::goToNextScreen()
+int ServiceModel::inputType() const
 {
-    goToScreen(m_currentScreen + 1);
+    return m_inputType;
 }
 
-void ServiceModel::goToPreviouseScreen() // Note typo matches user request exactly
+void ServiceModel::startService(int id, const QString &name, int type)
 {
-    if (m_currentScreen > 0) {
-        goToScreen(m_currentScreen - 1);
-    }
+    m_serviceId = id;
+    m_serviceName = name;
+    m_inputType = type;
+    emit serviceChanged();
+}
+
+void ServiceModel::clearService()
+{
+    m_serviceId = 0;
+    m_serviceName.clear();
+    m_inputType = kDefaultInputType;
+    emit serviceChanged();
 }
 
 } // namespace test

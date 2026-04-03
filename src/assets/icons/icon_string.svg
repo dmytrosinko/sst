@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Pencil body -->
+  <rect x="14" y="14" width="32" height="36" rx="4" stroke="white" stroke-width="2.5"
+        transform="rotate(-5 30 32)"/>
+  <!-- Text lines -->
+  <line x1="22" y1="24" x2="42" y2="23" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <line x1="22" y1="32" x2="38" y2="31" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <line x1="22" y1="40" x2="34" y2="39" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <!-- Cursor blink line -->
+  <line x1="48" y1="22" x2="48" y2="34" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+</svg>

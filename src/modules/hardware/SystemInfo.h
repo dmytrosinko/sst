@@ -4,6 +4,7 @@
 #include <QtQml/qqmlregistration.h>
 #include <QTimer>
 #include <QString>
+#include <atomic>
 
 namespace hardware {
 
@@ -39,7 +40,7 @@ private:
     QString m_availableRam;
     QString m_fps;
     QTimer m_timer;
-    bool m_isUpdating = false;
+    std::atomic<bool> m_isUpdating{false};
 
     int m_frameCount = 0;
     qint64 m_lastFpsTime = 0;

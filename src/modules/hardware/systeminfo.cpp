@@ -72,7 +72,7 @@ void SystemInfo::updateStats() {
   auto prevTotalIdle = m_lastTotalIdle;
 #endif
 
-  QtConcurrent::run([=]() mutable {
+  (void)QtConcurrent::run([=]() mutable {
 #ifdef Q_OS_WIN
     // RAM
     MEMORYSTATUSEX memInfo;
@@ -85,12 +85,19 @@ void SystemInfo::updateStats() {
     // CPU
     FILETIME idleTime, kernelTime, userTime;
     if (GetSystemTimes(&idleTime, &kernelTime, &userTime)) {
-      unsigned long long idle =
-          (reinterpret_cast<ULARGE_INTEGER *>(&idleTime))->QuadPart;
-      unsigned long long kernel =
-          (reinterpret_cast<ULARGE_INTEGER *>(&kernelTime))->QuadPart;
-      unsigned long long user =
-          (reinterpret_cast<ULARGE_INTEGER *>(&userTime))->QuadPart;
+      unsigned long long idle = 0, kernel = 0, user = 0;
+      {
+          ULARGE_INTEGER li;
+          li.LowPart = idleTime.dwLowDateTime;
+          li.HighPart = idleTime.dwHighDateTime;
+          idle = li.QuadPart;
+          li.LowPart = kernelTime.dwLowDateTime;
+          li.HighPart = kernelTime.dwHighDateTime;
+          kernel = li.QuadPart;
+          li.LowPart = userTime.dwLowDateTime;
+          li.HighPart = userTime.dwHighDateTime;
+          user = li.QuadPart;
+      }
 
       if (prevIdle != 0) {
         unsigned long long idleDiff = idle - prevIdle;

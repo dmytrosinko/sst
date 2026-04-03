@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Templates as T
+import modules.style
 
 T.TextField {
     id: control
@@ -8,21 +9,22 @@ T.TextField {
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                              contentHeight + topPadding + bottomPadding)
 
-    // When the user taps the field, snag focus so VirtualKeyboard can activate.
     activeFocusOnPress: true
-    color: "#ECEFF4"
-    selectedTextColor: "#ECEFF4"
-    selectionColor: "#81A1C1"
-    
-    font.pixelSize: 16
+    color: Style.currentStyle.textPrimary
+    selectedTextColor: Style.currentStyle.textPrimary
+    selectionColor: Style.currentStyle.accentPrimary
+
+    font.pixelSize: Style.currentStyle.fontSizeNormal
     verticalAlignment: TextInput.AlignVCenter
     leftPadding: 10
 
     background: Rectangle {
         implicitWidth: 200
         implicitHeight: 40
-        color: "#2E3440"
-        border.color: control.activeFocus ? "#88C0D0" : "#4C566A"
+        color: Style.currentStyle.surfaceSecondary
+        border.color: control.activeFocus
+                      ? Style.currentStyle.borderAccent
+                      : Style.currentStyle.borderDefault
         border.width: 2
         radius: 6
     }

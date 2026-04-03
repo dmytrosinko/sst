@@ -1,12 +1,9 @@
 import QtQuick
-import QtQuick.VirtualKeyboard
-import QtQuick.Layouts
-import modules.hardware
-import modules.controls
-import service.testservice
-
+import modules.ui
 Window {
     id: window
+    property size targetSize : Qt.size(1280,920)
+    property real globalScale: Math.min(Screen.width / targetSize.width, Screen.height / targetSize.height)
     visibility: Window.FullScreen
     visible: true
     width: Screen.width
@@ -14,76 +11,46 @@ Window {
     title: qsTr("SST")
     color: "#D8DEE9"
 
-    // Language Toggle
-    Button {
-        id: langToggle
-        anchors.top: parent.top
-        anchors.right: parent.right
-        anchors.margins: 10
-        width: 60
-        height: 40
-        text: TranslationManager.isEnglish ? "EN" : "KY"
-        z: 100 // keep above viewport
-        
-        // background: Rectangle {
-        //    // color: "#ECEFF4"
-        //     radius: 4
-        //     border.color: "#D8DEE9"
-        // }
-        
-        onClicked: TranslationManager.toggleLanguage()
+    Shortcut {
+        sequence: "Ctrl+X"
+        onActivated: Qt.quit()
     }
+
+    Component.onCompleted: {
+        homeLoader.active = true;
+    }
+
+    MainBackground  {
+        anchors.fill: parent
+    }
+
 
     Item {
-        id: viewport
-        width: parent.width
-        height: parent.height
+        id: splash
+        anchors.fill: parent
+        visible: homeLoader.status !== Loader.Ready
 
-
-        ColumnLayout {
-            anchors.fill: parent
-            spacing: 20
-            Item {
-                Layout.fillHeight: true
-            }
-
-            HardwareInfo {
-                Layout.alignment: Qt.AlignHCenter
-                // Layout.preferredWidth: parent.width * 0.4
-                // Layout.preferredHeight: parent.width * 0.4 * 1.2
-                visible: !serviceView.visible
-            }
-
-            Button {
-                Layout.alignment: Qt.AlignHCenter
-                visible: !serviceView.visible
-                text: qsTr("Start Service")
-                // Layout.preferredWidth: parent.width * 0.3
-                // Layout.preferredHeight: parent.width * 0.3 * 0.3
-                onClicked: {
-                    ServiceModel.goToScreen(0)
-                    serviceView.visible = true
-                }
-            }
-
-            Item {
-                Layout.fillHeight: true
-            }
-
-            // Test controls replaced by actual service instance for testing
-
-        }
-
-        Service {
-            id: serviceView
-            visible: false
-            anchors.fill: parent
-
-            onQuitService: {
-                // Return to main layout by hiding the service and resetting model
-                visible = false
-            }
+        Image {
+            id: logo
+            source: "assets/logo.svg"
+            anchors.centerIn: parent
+            width: Math.min(parent.width, parent.height) * 0.3
+            height: width
+            fillMode: Image.PreserveAspectFit
+            sourceSize: Qt.size(width, height)
         }
     }
 
+    Loader {
+        id: homeLoader
+        active: false
+        width: window.targetSize.width
+        height: window.targetSize.height
+        anchors.centerIn: parent
+        scale: window.globalScale
+        asynchronous: true
+        source: "qrc:/qt/qml/modules/ui/Home.qml"
+        opacity: status === Loader.Ready ? 1.0 : 0.0
+        Behavior on opacity { NumberAnimation { duration: 300 } }
+    }
 }
