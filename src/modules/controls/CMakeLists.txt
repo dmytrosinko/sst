@@ -12,6 +12,7 @@ set_source_files_properties(qml/NumberInput.qml PROPERTIES QT_RESOURCE_ALIAS Num
 set_source_files_properties(qml/StringInput.qml PROPERTIES QT_RESOURCE_ALIAS StringInput.qml)
 set_source_files_properties(qml/NumPad.qml PROPERTIES QT_RESOURCE_ALIAS NumPad.qml)
 set_source_files_properties(qml/AlphaKeyboard.qml PROPERTIES QT_RESOURCE_ALIAS AlphaKeyboard.qml)
+set_source_files_properties(qml/StringKeyboard.qml PROPERTIES QT_RESOURCE_ALIAS StringKeyboard.qml)
 
 qt_add_qml_module(${PROJECT_NAME}
     URI modules.${PROJECT_NAME}
@@ -30,6 +31,7 @@ qt_add_qml_module(${PROJECT_NAME}
         qml/NumberInput.qml
         qml/StringInput.qml
         qml/NumPad.qml
-        qml/AlphaKeyboard.qml
+
+        qml/StringKeyboard.qml
 )
 

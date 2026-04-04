@@ -5,6 +5,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QDebug>
+#include <QtConcurrent/QtConcurrent>
 
 namespace services {
 
@@ -183,6 +184,52 @@ bool ServiceTreeModel::loadFromJsonResource(const QString &resourcePath)
 
     qDebug() << "ServiceTreeModel: loaded" << categories.size() << "categories from" << resourcePath;
     return true;
+}
+
+void ServiceTreeModel::loadFromJsonResourceAsync(const QString &resourcePath)
+{
+    // ── Phase 1: read + parse JSON on a background thread ────────────────────
+    QtConcurrent::run([this, resourcePath]() {
+        QFile file(resourcePath);
+        if (!file.open(QIODevice::ReadOnly)) {
+            qWarning() << "ServiceTreeModel: cannot open" << resourcePath;
+            QMetaObject::invokeMethod(this, [this]() { emit loadingFinished(false); });
+            return;
+        }
+
+        QJsonParseError err;
+        const QJsonDocument doc = QJsonDocument::fromJson(file.readAll(), &err);
+        if (err.error != QJsonParseError::NoError) {
+            qWarning() << "ServiceTreeModel: JSON parse error:" << err.errorString();
+            QMetaObject::invokeMethod(this, [this]() { emit loadingFinished(false); });
+            return;
+        }
+
+        // Capture parsed data by value — safe to pass across threads
+        const QJsonArray categories = doc.array();
+
+        // ── Phase 2: populate model on the main (UI) thread ──────────────────
+        QMetaObject::invokeMethod(this, [this, categories]() {
+            clear();
+            for (const QJsonValue &catVal : categories) {
+                const QJsonObject cat = catVal.toObject();
+                const int catId        = cat[QLatin1String("id")].toInt();
+                const QString catName  = cat[QLatin1String("name")].toString();
+                addCategory(catId, catName);
+
+                const QJsonArray services = cat[QLatin1String("services")].toArray();
+                for (const QJsonValue &svcVal : services) {
+                    const QJsonObject svc = svcVal.toObject();
+                    addService(catId,
+                               svc[QLatin1String("id")].toInt(),
+                               svc[QLatin1String("inputType")].toString(),
+                               svc[QLatin1String("name")].toString());
+                }
+            }
+            qDebug() << "ServiceTreeModel: async loaded" << categories.size() << "categories";
+            emit loadingFinished(true);
+        });
+    });
 }
 
 QString ServiceTreeModel::translatedCategoryName(int row) const

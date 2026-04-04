@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import app
 import modules.controls
 import modules.style
 
@@ -10,6 +11,7 @@ Item {
 
     signal quitRequested()
     signal nextRequested()
+
 
     ColumnLayout {
         anchors.centerIn: parent

@@ -7,7 +7,7 @@ Item {
 
     // ── Public API ──────────────────────────────────────────────────
     property alias text: inputField.text
-    property string placeholder: qsTr("Маалыматтарды киргизиңиз...")
+    property string placeholder: qsTr("Enter data...")
     property int maxLength: 256
     readonly property bool isValid: inputField.text.length > 0
     readonly property string rawValue: inputField.text

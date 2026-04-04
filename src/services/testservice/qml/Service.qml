@@ -38,13 +38,13 @@ Item {
                     property: "x"
                     from: stackView.width
                     to: 0
-                    duration: 350
+                    duration: 150
                     easing.type: Easing.OutCubic
                 }
                 NumberAnimation {
                     property: "opacity"
                     from: 0; to: 1
-                    duration: 250
+                    duration: 120
                 }
             }
         }
@@ -54,13 +54,13 @@ Item {
                     property: "x"
                     from: 0
                     to: -stackView.width * 0.3
-                    duration: 350
+                    duration: 150
                     easing.type: Easing.OutCubic
                 }
                 NumberAnimation {
                     property: "opacity"
                     from: 1; to: 0
-                    duration: 250
+                    duration: 120
                 }
             }
         }
@@ -72,13 +72,13 @@ Item {
                     property: "x"
                     from: -stackView.width * 0.3
                     to: 0
-                    duration: 350
+                    duration: 150
                     easing.type: Easing.OutCubic
                 }
                 NumberAnimation {
                     property: "opacity"
                     from: 0; to: 1
-                    duration: 250
+                    duration: 120
                 }
             }
         }
@@ -88,13 +88,13 @@ Item {
                     property: "x"
                     from: 0
                     to: stackView.width
-                    duration: 350
+                    duration: 150
                     easing.type: Easing.OutCubic
                 }
                 NumberAnimation {
                     property: "opacity"
                     from: 1; to: 0
-                    duration: 250
+                    duration: 120
                 }
             }
         }

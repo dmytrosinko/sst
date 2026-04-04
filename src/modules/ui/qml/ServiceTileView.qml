@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQml.Models
+import app
 import modules.services
 import modules.style
 import modules.controls
@@ -116,32 +117,8 @@ Item {
             columns: gridContainer.cols
             spacing: gridContainer.tileSpacing
 
-            // Proper fade-out then hide / show then fade-in (#8)
-            states: State {
-                name: "hidden"
-                when: root.selectedCategoryId >= 0
-                PropertyChanges {
-                    categoriesGrid.opacity: 0
-                    categoriesGrid.visible: false
-                }
-            }
-
-            transitions: [
-                Transition {
-                    to: "hidden"
-                    SequentialAnimation {
-                        NumberAnimation { property: "opacity"; duration: 250; easing.type: Easing.InOutQuad }
-                        PropertyAction { property: "visible" }
-                    }
-                },
-                Transition {
-                    from: "hidden"
-                    SequentialAnimation {
-                        PropertyAction { property: "visible" }
-                        NumberAnimation { property: "opacity"; duration: 250; easing.type: Easing.InOutQuad }
-                    }
-                }
-            ]
+            // Instant hide/show – no animation delay
+            visible: root.selectedCategoryId < 0
 
             Repeater {
                 id: catRepeater
@@ -173,38 +150,12 @@ Item {
         Grid {
             id: servicesGrid
             anchors.centerIn: parent
-            visible: false
-            opacity: 0
 
             columns: gridContainer.cols
             spacing: gridContainer.tileSpacing
 
-            // Proper show then fade-in / fade-out then hide (#8)
-            states: State {
-                name: "shown"
-                when: root.selectedCategoryId >= 0
-                PropertyChanges {
-                    servicesGrid.visible: true
-                    servicesGrid.opacity: 1
-                }
-            }
-
-            transitions: [
-                Transition {
-                    to: "shown"
-                    SequentialAnimation {
-                        PropertyAction { property: "visible" }
-                        NumberAnimation { property: "opacity"; duration: 250; easing.type: Easing.InOutQuad }
-                    }
-                },
-                Transition {
-                    from: "shown"
-                    SequentialAnimation {
-                        NumberAnimation { property: "opacity"; duration: 250; easing.type: Easing.InOutQuad }
-                        PropertyAction { property: "visible" }
-                    }
-                }
-            ]
+            // Instant show/hide – no animation delay
+            visible: root.selectedCategoryId >= 0
 
             Repeater {
                 id: svcRepeater

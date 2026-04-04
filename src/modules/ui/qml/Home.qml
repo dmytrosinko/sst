@@ -89,8 +89,16 @@ Item {
     //   QT_TRANSLATE_NOOP("ServiceTreeModel", "Water")
     //   QT_TRANSLATE_NOOP("ServiceTreeModel", "Gas")
 
-    // ── Load service catalog from JSON ──
+    // ── Load service catalog from JSON (async — off the main thread) ──
     Component.onCompleted: {
-        ServiceTreeModel.loadFromJsonResource(":/qt/qml/app/assets/services.json")
+        ServiceTreeModel.loadFromJsonResourceAsync(":/qt/qml/app/assets/services.json")
+    }
+
+    Connections {
+        target: ServiceTreeModel
+        function onLoadingFinished(success) {
+            if (!success)
+                console.warn("ServiceTreeModel: failed to load service catalog")
+        }
     }
 }

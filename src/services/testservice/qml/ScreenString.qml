@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import app
 import modules.controls
 import modules.style
 
@@ -73,11 +74,11 @@ Item {
             }
         }
 
-        // ── Bottom panel: full QWERTY keyboard ─────────────────────
-        AlphaKeyboard {
+        // ── Bottom panel: full keyboard ────────────────────────────
+        StringKeyboard {
             Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.maximumHeight: 280
+
+            language: TranslationManager.currentLanguage
 
             onKeyPressed: function(key) {
                 stringInput.text += key
@@ -88,6 +89,7 @@ Item {
                     stringInput.text = raw.substring(0, raw.length - 1)
             }
             onSpacePressed: stringInput.text += " "
+            onLanguageSwitch: TranslationManager.toggleLanguage()
         }
     }
 }

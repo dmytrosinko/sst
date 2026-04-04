@@ -50,6 +50,7 @@ public:
 
     Q_INVOKABLE void clear();
     Q_INVOKABLE bool loadFromJsonResource(const QString &resourcePath);
+    Q_INVOKABLE void loadFromJsonResourceAsync(const QString &resourcePath);
     Q_INVOKABLE QString translatedCategoryName(int row) const;
 
     int translationRevision() const { return m_translationRevision; }
@@ -59,6 +60,7 @@ public slots:
 
 signals:
     void translationRevisionChanged();
+    void loadingFinished(bool success);   ///< emitted on main thread after async load
 
 private:
     ServiceTreeItem *itemFromIndex(const QModelIndex &index) const;

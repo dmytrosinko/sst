@@ -10,8 +10,8 @@ Item {
     signal backspace()
     signal clear()
 
-    implicitWidth: 320
-    implicitHeight: 420
+    implicitWidth: 482
+    implicitHeight: 640
 
     // ── Numpad grid ────────────────────────────────────────────────
     GridLayout {

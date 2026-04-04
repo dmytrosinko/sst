@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import app
 import modules.controls
 import modules.style
 
@@ -29,9 +30,6 @@ Item {
             Layout.fillHeight: true
             Layout.maximumWidth: parent.width * 0.45
             spacing: 20
-
-            Item { Layout.fillHeight: true }
-
             Text {
                 Layout.fillWidth: true
                 text: root.serviceName
@@ -86,15 +84,18 @@ Item {
 
         // ── Right panel: numpad ────────────────────────────────────
         NumPad {
-            Layout.fillHeight: true
-            Layout.preferredWidth: parent.width * 0.45
+            Layout.alignment: Qt.AlignVCenter
+            Layout.preferredWidth: 482
+            Layout.preferredHeight: 640
+            Layout.maximumWidth: 482
+            Layout.maximumHeight: 640
 
             onKeyPressed: function(key) {
                 if (inputLoader.item) inputLoader.item.text += key
             }
             onBackspace: {
                 if (inputLoader.item) {
-                    var raw = inputLoader.item.text
+                    var raw = inputLoader.item.text.replace(/\s/g, "")
                     if (raw.length > 0)
                         inputLoader.item.text = raw.substring(0, raw.length - 1)
                 }
