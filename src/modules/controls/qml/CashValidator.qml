@@ -47,6 +47,7 @@ Item {
             root.insertCash()
         }
     }
+    //test comment
 
     Image {
         id: validatorBg
