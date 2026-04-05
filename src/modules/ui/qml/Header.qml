@@ -33,11 +33,12 @@ Item {
 
         Text {
             id: titleText
-            text: "Simbank"
+            text: "SIMBANK"
             color: "#FFFFFF"
             font.pixelSize: 50
             font.weight: Font.DemiBold
             font.letterSpacing: 1.2
+            verticalAlignment: Text.AlignVCenter
             Layout.alignment: Qt.AlignVCenter
         }
 
