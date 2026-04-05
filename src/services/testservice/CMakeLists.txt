@@ -13,6 +13,7 @@ qt_add_qml_module(${PROJECT_NAME}
     URI service.${PROJECT_NAME}
     VERSION 1.0
     STATIC
+    OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../service/${PROJECT_NAME}
     QML_FILES
         qml/Service.qml
         qml/ScreenInputPhone.qml
