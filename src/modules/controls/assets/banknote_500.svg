@@ -1,0 +1,40 @@
+<svg width="400" height="850" viewBox="0 0 400 850" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bc_bg" x1="0" y1="0" x2="400" y2="850">
+      <stop offset="0%" stop-color="#D6E0E5"/>
+      <stop offset="50%" stop-color="#BACCE0"/>
+      <stop offset="100%" stop-color="#8DA7C5"/>
+    </linearGradient>
+    <pattern id="pattern_500" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M0,10 L10,0 L20,10 L10,20 Z" fill="#8DA7C5" opacity="0.3"/>
+    </pattern>
+  </defs>
+  <!-- Base -->
+  <rect width="400" height="850" fill="url(#bc_bg)"/>
+  
+  <!-- Security Pattern Background -->
+  <rect x="0" y="0" width="400" height="850" fill="url(#pattern_500)"/>
+  
+  <!-- Left modern geometric portrait placeholder -->
+  <path d="M60,180 Q120,80 220,130 T280,250 Q320,380 220,480 T120,650 Q80,750 40,820 L10,820 L10,180 Z" fill="#7A93AF" opacity="0.4"/>
+  <circle cx="210" cy="380" r="110" fill="#ffffff" opacity="0.5"/>
+  <path d="M160,340 Q210,290 260,340 T260,450 Q210,490 160,450 Z" fill="#5F7696" opacity="0.8"/>
+
+  <!-- Value Text -->
+  <text x="30" y="80" font-family="sans-serif" font-weight="900" font-size="56" fill="#2E435E">500</text>
+  <text x="260" y="820" font-family="sans-serif" font-weight="900" font-size="56" fill="#2E435E">500</text>
+
+  <!-- Title / Words -->
+  <text x="30" y="120" font-family="sans-serif" font-weight="bold" font-size="18" fill="#2E435E" letter-spacing="4">КЫРГЫЗ БАНКЫ</text>
+  <text x="180" y="750" font-family="sans-serif" font-weight="bold" font-size="28" fill="#2E435E">БЕШ ЖҮЗ СОМ</text>
+
+  <!-- Security Thread / Hologram -->
+  <rect x="330" y="0" width="12" height="850" fill="#A8BAC9" opacity="0.7"/>
+  <rect x="325" y="150" width="22" height="15" fill="#D4AF37"/>
+  <rect x="325" y="350" width="22" height="15" fill="#D4AF37"/>
+  <rect x="325" y="550" width="22" height="15" fill="#D4AF37"/>
+  <rect x="325" y="750" width="22" height="15" fill="#D4AF37"/>
+
+  <!-- Watermark area -->
+  <rect x="50" y="580" width="140" height="200" rx="15" fill="#ffffff" opacity="0.4"/>
+</svg>

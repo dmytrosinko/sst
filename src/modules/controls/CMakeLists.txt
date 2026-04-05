@@ -13,6 +13,7 @@ set_source_files_properties(qml/StringInput.qml PROPERTIES QT_RESOURCE_ALIAS Str
 set_source_files_properties(qml/NumPad.qml PROPERTIES QT_RESOURCE_ALIAS NumPad.qml)
 set_source_files_properties(qml/AlphaKeyboard.qml PROPERTIES QT_RESOURCE_ALIAS AlphaKeyboard.qml)
 set_source_files_properties(qml/StringKeyboard.qml PROPERTIES QT_RESOURCE_ALIAS StringKeyboard.qml)
+set_source_files_properties(qml/CashValidator.qml PROPERTIES QT_RESOURCE_ALIAS CashValidator.qml)
 
 qt_add_qml_module(${PROJECT_NAME}
     URI modules.${PROJECT_NAME}
@@ -31,7 +32,12 @@ qt_add_qml_module(${PROJECT_NAME}
         qml/NumberInput.qml
         qml/StringInput.qml
         qml/NumPad.qml
-
         qml/StringKeyboard.qml
+        qml/CashValidator.qml
+    RESOURCES
+        assets/cash_slot.svg
+        assets/banknote_1000.svg
+        assets/banknote_500.svg
+        assets/banknote_5000.svg
 )
 

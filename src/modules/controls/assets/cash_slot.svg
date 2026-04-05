@@ -1,0 +1,39 @@
+<svg width="600" height="200" viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg_grad" x1="0" y1="0" x2="0" y2="200">
+      <stop offset="0%" stop-color="#2a2a2a"/>
+      <stop offset="100%" stop-color="#141414"/>
+    </linearGradient>
+    <linearGradient id="rim_grad" x1="0" y1="0" x2="0" y2="40">
+      <stop offset="0%" stop-color="#4a4a4a"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Background panel -->
+  <rect width="600" height="200" rx="10" fill="url(#bg_grad)" />
+  
+  <!-- Outer Rim / Bezel -->
+  <rect x="50" y="70" width="500" height="60" rx="8" fill="url(#rim_grad)" stroke="#1a1a1a" stroke-width="2"/>
+  
+  <!-- Inner Recess -->
+  <rect x="55" y="75" width="490" height="50" rx="5" fill="#050505" />
+  
+  <!-- The pure dark slot -->
+  <rect x="60" y="85" width="480" height="30" rx="2" fill="#000000" />
+  
+  <!-- Top lip highlight -->
+  <line x1="60" y1="85" x2="540" y2="85" stroke="#3a3a3a" stroke-width="1.5" />
+  <!-- Bottom lip highlight -->
+  <line x1="60" y1="115" x2="540" y2="115" stroke="#1f1f1f" stroke-width="1.5" />
+  
+  <!-- LEDs -->
+  <circle cx="200" cy="100" r="4" fill="#00ff66" filter="url(#glow)"/>
+  <circle cx="400" cy="100" r="4" fill="#00ff66" filter="url(#glow)"/>
+</svg>

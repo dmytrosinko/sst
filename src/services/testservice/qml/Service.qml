@@ -5,24 +5,49 @@ import service.testservice
 Item {
     id: root
 
-    signal quitService()
+    signal quitService
 
     // ── Screen components ──────────────────────────────────────────
-    Component { id: screenPhoneComponent;  ScreenPhone  {} }
-    Component { id: screenCardComponent;   ScreenCard   {} }
-    Component { id: screenIbanComponent;   ScreenIban   {} }
-    Component { id: screenNumberComponent; ScreenNumber {} }
-    Component { id: screenStringComponent; ScreenString {} }
-    Component { id: screen2Component;      Screen2      {} }
-    Component { id: screen3Component;      Screen3      {} }
+    Component {
+        id: screenPhoneComponent
+        ScreenInputPhone {}
+    }
+    Component {
+        id: screenCardComponent
+        ScreenInputCardNumber {}
+    }
+    Component {
+        id: screenIbanComponent
+        ScreenInputIban {}
+    }
+    Component {
+        id: screenNumberComponent
+        ScreenInputNumber {}
+    }
+    Component {
+        id: screenStringComponent
+        ScreenInputString {}
+    }
+    Component {
+        id: cashScreenComponent
+        ScreenInsertCash {}
+    }
+    Component {
+        id: screen3Component
+        Screen3 {}
+    }
 
     // ── Map input type enum → screen component ─────────────────────
     function _componentForType(inputType) {
         switch (inputType) {
-        case 0: return screenPhoneComponent     // Phone
-        case 1: return screenIbanComponent      // IBAN
-        case 2: return screenNumberComponent    // Account
-        default: return screenStringComponent   // Default
+        case 0:
+            return screenPhoneComponent;     // Phone
+        case 1:
+            return screenIbanComponent;      // IBAN
+        case 2:
+            return screenNumberComponent;    // Account
+        default:
+            return screenStringComponent;   // Default
         }
     }
 
@@ -43,7 +68,8 @@ Item {
                 }
                 NumberAnimation {
                     property: "opacity"
-                    from: 0; to: 1
+                    from: 0
+                    to: 1
                     duration: 120
                 }
             }
@@ -59,7 +85,8 @@ Item {
                 }
                 NumberAnimation {
                     property: "opacity"
-                    from: 1; to: 0
+                    from: 1
+                    to: 0
                     duration: 120
                 }
             }
@@ -77,7 +104,8 @@ Item {
                 }
                 NumberAnimation {
                     property: "opacity"
-                    from: 0; to: 1
+                    from: 0
+                    to: 1
                     duration: 120
                 }
             }
@@ -93,7 +121,8 @@ Item {
                 }
                 NumberAnimation {
                     property: "opacity"
-                    from: 1; to: 0
+                    from: 1
+                    to: 0
                     duration: 120
                 }
             }
@@ -102,11 +131,11 @@ Item {
 
     // ── Public: push the correct input screen ──────────────────────
     function showInputScreen() {
-        stackView.clear()
-        var component = _componentForType(ServiceModel.inputType)
+        stackView.clear();
+        var component = _componentForType(ServiceModel.inputType);
         stackView.push(component, {
             "serviceName": ServiceModel.serviceName
-        })
+        });
     }
 
     // ── Connect each pushed screen's signals ───────────────────────
@@ -116,31 +145,31 @@ Item {
 
         function onQuitRequested() {
             if (stackView.depth > 1) {
-                stackView.pop()
+                stackView.pop();
             } else {
-                stackView.clear()
-                root.quitService()
+                stackView.clear();
+                root.quitService();
             }
         }
 
         function onNextRequested() {
-            // Input screen (depth 1) → push Screen2 (confirmation)
-            // Screen2 (depth 2)      → push Screen3 (result)
+            // Input screen (depth 1) → push CashScreen
+            // CashScreen (depth 2)   → push Screen3 (result)
             if (stackView.depth === 1) {
-                stackView.push(screen2Component, {
+                stackView.push(cashScreenComponent, {
                     "serviceName": ServiceModel.serviceName
-                })
+                });
             } else if (stackView.depth === 2) {
                 stackView.push(screen3Component, {
                     "serviceName": ServiceModel.serviceName
-                })
+                });
             }
         }
 
         // Screen3 DONE → clear everything and exit
         function onDoneRequested() {
-            stackView.clear()
-            root.quitService()
+            stackView.clear();
+            root.quitService();
         }
     }
 }

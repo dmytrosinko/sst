@@ -120,6 +120,33 @@ Item {
             }
         }
 
+        // ── Cash Validator ─────────────────────────────────────────
+        Item {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: 300
+            Layout.preferredHeight: 450
+            Layout.topMargin: 20
+            
+            CashValidator {
+                id: cashValidator
+                width: 600
+                height: 900
+                scale: 0.5
+                transformOrigin: Item.TopLeft
+                
+                Component.onCompleted: {
+                    // Automatically start the insertion animation after a short delay
+                    insertionTimer.start()
+                }
+
+                Timer {
+                    id: insertionTimer
+                    interval: 500
+                    onTriggered: cashValidator.insertCash()
+                }
+            }
+        }
+
         // ── Buttons ────────────────────────────────────────────────
         RowLayout {
             Layout.alignment: Qt.AlignHCenter

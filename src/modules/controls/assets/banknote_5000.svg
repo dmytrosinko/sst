@@ -1,0 +1,40 @@
+<svg width="400" height="850" viewBox="0 0 400 850" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg_5000" x1="0" y1="0" x2="400" y2="850">
+      <stop offset="0%" stop-color="#C2E0C6"/>
+      <stop offset="50%" stop-color="#8BBF95"/>
+      <stop offset="100%" stop-color="#609669"/>
+    </linearGradient>
+    <pattern id="pattern_5000" x="0" y="0" width="25" height="25" patternUnits="userSpaceOnUse">
+      <rect x="5" y="5" width="10" height="10" fill="#609669" opacity="0.3" transform="rotate(45 10 10)"/>
+    </pattern>
+  </defs>
+  <!-- Base -->
+  <rect width="400" height="850" fill="url(#bg_5000)"/>
+  
+  <!-- Security Pattern Background -->
+  <rect x="0" y="0" width="400" height="850" fill="url(#pattern_5000)"/>
+  
+  <!-- Left modern geometric portrait placeholder -->
+  <path d="M40,150 Q100,50 200,90 T320,200 Q360,320 250,450 T130,620 Q70,750 30,800 L10,800 L10,150 Z" fill="#6B9974" opacity="0.4"/>
+  <circle cx="200" cy="360" r="110" fill="#ffffff" opacity="0.5"/>
+  <path d="M150,320 Q200,270 250,320 T250,440 Q200,480 150,440 Z" fill="#4B7754" opacity="0.8"/>
+
+  <!-- Value Text -->
+  <text x="30" y="80" font-family="sans-serif" font-weight="900" font-size="56" fill="#1C3D24">5000</text>
+  <text x="240" y="820" font-family="sans-serif" font-weight="900" font-size="56" fill="#1C3D24">5000</text>
+
+  <!-- Title / Words -->
+  <text x="30" y="120" font-family="sans-serif" font-weight="bold" font-size="18" fill="#1C3D24" letter-spacing="4">КЫРГЫЗ БАНКЫ</text>
+  <text x="160" y="750" font-family="sans-serif" font-weight="bold" font-size="28" fill="#1C3D24">БЕШ МИҢ СОМ</text>
+
+  <!-- Security Thread / Hologram -->
+  <rect x="330" y="0" width="16" height="850" fill="#9BAC9F" opacity="0.8"/>
+  <rect x="325" y="120" width="26" height="20" fill="#D4AF37"/>
+  <rect x="325" y="320" width="26" height="20" fill="#D4AF37"/>
+  <rect x="325" y="520" width="26" height="20" fill="#D4AF37"/>
+  <rect x="325" y="720" width="26" height="20" fill="#D4AF37"/>
+
+  <!-- Watermark area -->
+  <rect x="50" y="580" width="140" height="200" rx="15" fill="#ffffff" opacity="0.4"/>
+</svg>
