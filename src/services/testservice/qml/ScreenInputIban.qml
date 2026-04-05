@@ -62,15 +62,21 @@ Item {
             }
 
             RowLayout {
+                Layout.fillWidth: true
+                Layout.maximumWidth: 600
                 Layout.alignment: Qt.AlignHCenter
                 spacing: 16
 
                 Button {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 64
                     text:      qsTr("BACK")
                     onClicked: root.quitRequested()
                 }
 
                 Button {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 64
                     text:      qsTr("NEXT")
                     enabled:   ibanInput.isValid
                     onClicked: root.nextRequested()

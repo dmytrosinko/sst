@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.1" language="ky" sourcelanguage="en">
 <context>
@@ -50,7 +50,7 @@
     </message>
 </context>
 <context>
-    <name>Screen2</name>
+    <name>ScreenInsertCash</name>
     <message>
         <source>Confirm details</source>
         <translation>Маалыматтарды ырастоо</translation>
@@ -72,7 +72,7 @@
         <translation>АРТКА</translation>
     </message>
     <message>
-        <source>CONFIRM</source>
+        <source>NEXT</source>
         <translation>ЫРАСТОО</translation>
     </message>
 </context>
@@ -117,7 +117,7 @@ number</source>
     </message>
 </context>
 <context>
-    <name>ScreenIban</name>
+    <name>ScreenInputIban</name>
     <message>
         <source>Enter IBAN
 number</source>
@@ -156,7 +156,7 @@ phone number</source>
     </message>
 </context>
 <context>
-    <name>ScreenString</name>
+    <name>ScreenInputString</name>
     <message>
         <source>Enter information</source>
         <translation>Маалыматтарды киргизиңиз</translation>

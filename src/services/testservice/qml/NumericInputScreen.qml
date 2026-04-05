@@ -68,11 +68,15 @@ Item {
                 spacing: 16
 
                 Button {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 64
                     text: qsTr("BACK")
                     onClicked: root.quitRequested()
                 }
 
                 Button {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 64
                     text: qsTr("NEXT")
                     enabled: inputLoader.item && inputLoader.item.isValid
                     onClicked: root.nextRequested()
