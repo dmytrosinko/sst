@@ -1,7 +1,9 @@
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.VectorImage
 import app
 import modules.controls
+
 
 Item {
     id: header
@@ -21,19 +23,19 @@ Item {
         anchors.rightMargin: 16
         spacing: 10
 
-        Image {
+        VectorImage {
             id: logoImage
             source: "qrc:/qt/qml/app/assets/logo.svg"
             Layout.preferredWidth: 75
             Layout.preferredHeight: 50
             Layout.alignment: Qt.AlignVCenter
             fillMode: Image.PreserveAspectFit
-            sourceSize: Qt.size(75, 50)
+            preferredRendererType: VectorImage.CurveRenderer
         }
 
         Text {
             id: titleText
-            text: "SIMBANK"
+            text: "Simbank"
             color: "#FFFFFF"
             font.pixelSize: 50
             font.weight: Font.DemiBold

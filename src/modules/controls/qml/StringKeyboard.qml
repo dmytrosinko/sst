@@ -114,7 +114,7 @@ Item {
             color:            _k.highlight ? Style.currentStyle.textOnAccent : _k.labelColor
             font.pixelSize:   _k.labelSize
             font.weight:      Font.Medium
-            font.family:      "Segoe UI"
+            font.family:      Style.currentStyle.fontFamily
         }
 
         MouseArea {
@@ -364,7 +364,7 @@ Item {
                                             : Style.currentStyle.textPrimary
                             font.pixelSize: 16
                             font.weight:    optionItem._isActive ? 600 : 400
-                            font.family:    "Segoe UI"
+                            font.family:    Style.currentStyle.fontFamily
                         }
 
                         MouseArea {

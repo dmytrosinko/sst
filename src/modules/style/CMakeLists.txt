@@ -8,6 +8,10 @@ set_source_files_properties(qml/DarkStyle.qml PROPERTIES
     QT_QML_SINGLETON_TYPE TRUE
     QT_RESOURCE_ALIAS DarkStyle.qml
 )
+set_source_files_properties(qml/SimbankPallete.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+    QT_RESOURCE_ALIAS SimbankPallete.qml
+)
 
 qt_add_qml_module(${PROJECT_NAME}
     URI modules.${PROJECT_NAME}
@@ -16,4 +20,5 @@ qt_add_qml_module(${PROJECT_NAME}
     QML_FILES
         qml/Style.qml
         qml/DarkStyle.qml
+        qml/SimbankPallete.qml
 )

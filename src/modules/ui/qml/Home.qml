@@ -9,7 +9,7 @@ import service.testservice
 Item {
     id: root
 
-    PanelBackground { anchors.fill: parent }
+    MainBackground { anchors.fill: parent }
 
     // ── Retranslate tree model names when language changes ──
     Connections {
@@ -100,5 +100,16 @@ Item {
             if (!success)
                 console.warn("ServiceTreeModel: failed to load service catalog")
         }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+G"
+        onActivated: gradientWindowLoader.active = !gradientWindowLoader.active
+    }
+
+    Loader {
+        id: gradientWindowLoader
+        active: false
+        source: "GradientSelectionWindow.qml"
     }
 }

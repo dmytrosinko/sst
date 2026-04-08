@@ -27,6 +27,7 @@ QtObject {
     readonly property color statusWarning:      "#EBCB8B"   // Warning / attention values
 
     // ── Typography ──
+    readonly property string fontFamily:              SimbankPallete.fontFamily
     readonly property int fontSizeSmall:        14
     readonly property int fontSizeNormal:       16
     readonly property int fontSizeLarge:        18

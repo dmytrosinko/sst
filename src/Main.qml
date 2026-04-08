@@ -20,8 +20,9 @@ Window {
         homeLoader.active = true;
     }
 
-    MainBackground  {
-        anchors.fill: parent
+    Rectangle {
+            anchors.fill: parent
+            color:"#F0F3F7"
     }
 
 

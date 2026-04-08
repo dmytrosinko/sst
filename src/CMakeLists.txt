@@ -35,6 +35,10 @@ qt_add_qml_module(${PROJECT_NAME}
         assets/icons/icon_iban.svg
         assets/icons/icon_number.svg
         assets/icons/icon_string.svg
+        assets/fonts/EuclidCircularB-Regular.ttf
+        assets/fonts/EuclidCircularB-Medium.ttf
+        assets/fonts/EuclidCircularB-SemiBold.ttf
+        assets/fonts/EuclidCircularB-Bold.ttf
         assets/services.json
 )
 
