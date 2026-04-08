@@ -20,6 +20,7 @@ Rectangle {
     // ── Public API ──────────────────────────────────────────────────
     property string iconSource: ""
     property string label: ""
+    property color tileColor: Style.currentStyle.tileColor
 
     readonly property bool hovered: tileMouseArea.containsMouse
     readonly property bool pressed: tileMouseArea.pressed
@@ -28,7 +29,7 @@ Rectangle {
 
     // ── Tile styling ────────────────────────────────────────────────
     radius: Math.min(width, height) * 0.08
-    color: SimbankPallete.currentTileColor
+    color: tileColor
     clip: true
     border.color: tileMouseArea.containsMouse
                   ? Qt.rgba(0.6, 0.55, 0.77, 0.6)
@@ -63,7 +64,7 @@ Rectangle {
             text: tile.label
             font.pixelSize: tile.height * 0.14
             font.weight: Font.Bold
-            color: "#FFFFFF"
+            color: Style.currentStyle.tileTextColor
             horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight
             wrapMode: Text.WordWrap

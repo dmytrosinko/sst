@@ -84,7 +84,7 @@ Item {
         id: _k
 
         property string label:      ""
-        property color  labelColor: Style.currentStyle.textPrimary
+        property color  labelColor: Style.currentStyle.keyTextColor
         property bool   highlight:  false
         property real   labelSize:  16
 
@@ -94,10 +94,10 @@ Item {
         Layout.preferredHeight: 64
         radius:                 10
 
-        color: _ma.pressed       ? Style.currentStyle.surfacePressed
-             : highlight         ? Style.currentStyle.accentSecondary
-             : _ma.containsMouse ? Style.currentStyle.surfaceHover
-             : Style.currentStyle.surfaceSecondary
+        color: _ma.pressed       ? Style.currentStyle.keyPressedColor
+             : highlight         ? Style.currentStyle.keyHighlightColor
+             : _ma.containsMouse ? Style.currentStyle.keyHoverColor
+             : Style.currentStyle.keyColor
 
         border.color: highlight
                       ? Style.currentStyle.borderAccent
@@ -111,7 +111,7 @@ Item {
         Text {
             anchors.centerIn: parent
             text:             _k.label
-            color:            _k.highlight ? Style.currentStyle.textOnAccent : _k.labelColor
+            color:            _k.highlight ? Style.currentStyle.keyHighlightTextColor : _k.labelColor
             font.pixelSize:   _k.labelSize
             font.weight:      Font.Medium
             font.family:      Style.currentStyle.fontFamily
@@ -129,7 +129,7 @@ Item {
     // ── Panel background ───────────────────────────────────────────────────
     Rectangle {
         anchors.fill: parent
-        color:        Style.currentStyle.surfacePrimary
+        color:        Style.currentStyle.keyboardBackground
         radius:       14
         border.color: Qt.rgba(1, 1, 1, 0.05)
         border.width: 1
@@ -203,7 +203,7 @@ Item {
                 label:                  "⌫"
                 Layout.preferredWidth:  100
                 Layout.preferredHeight: 64
-                labelColor:             Style.currentStyle.accentPrimary
+                labelColor:             Style.currentStyle.keyAccentTextColor
                 labelSize:              18
                 onTapped:               root.backspace()
             }
@@ -224,7 +224,7 @@ Item {
                 Layout.preferredWidth:  180
                 Layout.preferredHeight: 64
                 labelSize:              17
-                labelColor:             Style.currentStyle.accentPrimary
+                labelColor:             Style.currentStyle.keyAccentTextColor
                 border.color:           Style.currentStyle.borderAccent
                 border.width:           1
                 onTapped:               langPopup.open()
@@ -295,7 +295,7 @@ Item {
             height: root.availableLanguages.length * 62 + 16
             radius: 12
 
-            color:        Style.currentStyle.surfaceSecondary
+            color:        Style.currentStyle.keyColor
             border.color: Style.currentStyle.borderAccent
             border.width: 1
 
@@ -344,7 +344,7 @@ Item {
                             width:    3
                             height:   28
                             radius:   2
-                            color:    Style.currentStyle.accentPrimary
+                            color:    Style.currentStyle.keyPopupActiveTextColor
                             anchors {
                                 left:           parent.left
                                 leftMargin:     6
@@ -360,8 +360,8 @@ Item {
                             }
                             text:           root._labelFor(modelData)
                             color:          optionItem._isActive
-                                            ? Style.currentStyle.accentPrimary
-                                            : Style.currentStyle.textPrimary
+                                            ? Style.currentStyle.keyPopupActiveTextColor
+                                            : Style.currentStyle.keyPopupTextColor
                             font.pixelSize: 16
                             font.weight:    optionItem._isActive ? 600 : 400
                             font.family:    Style.currentStyle.fontFamily

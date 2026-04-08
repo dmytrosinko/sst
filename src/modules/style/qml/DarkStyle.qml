@@ -3,28 +3,54 @@ import QtQuick
 
 QtObject {
     // ── Background colors ──
-    readonly property color background:         "#000000"   // Window/page background (Header black)
-    readonly property color surfacePrimary:     "#0A0A0F"   // Cards, panels, tiles
-    readonly property color surfaceSecondary:   "#141419"   // Elevated surfaces, button default
-    readonly property color surfaceHover:       "#1E1E28"   // Hovered interactive surfaces
-    readonly property color surfacePressed:     "#2A2A38"   // Pressed interactive surfaces
+    property color background:         SimbankPallete.backgroundBlack
+    property color surfacePrimary:     SimbankPallete.darkSurfacePrimary
+    property color surfaceSecondary:   SimbankPallete.darkSurfaceSecondary
+    property color surfaceHover:       SimbankPallete.darkSurfaceHover
+    property color surfacePressed:     SimbankPallete.darkSurfacePressed
 
     // ── Border / outline colors ──
-    readonly property color borderDefault:      "#808090"   // Default border (bright)
-    readonly property color borderAccent:       "#9B8EC4"   // Focused / accent border (LanguageToggle purple)
-    readonly property color borderStrong:       "#000000"   // Strong/dark border
+    property color borderDefault:      SimbankPallete.borderBright
+    property color borderAccent:       SimbankPallete.accentPurpleBase
+    property color borderStrong:       SimbankPallete.logoBlack
 
     // ── Text colors ──
-    readonly property color textPrimary:        "#ECEFF4"   // Main text on dark surfaces
-    readonly property color textSecondary:      "#A0A0B0"   // Secondary / label text
-    readonly property color textOnAccent:       "#FFFFFF"   // Text on accent/hovered buttons
-    readonly property color textHeading:        "#B0A4D4"   // Section headings (light purple)
+    property color textPrimary:        SimbankPallete.textMainLight
+    property color textSecondary:      SimbankPallete.textLabelGrey
+    property color textOnAccent:       SimbankPallete.logoWhite
+    property color textHeading:        SimbankPallete.textHeadingPurple
 
     // ── Accent / status colors ──
-    readonly property color accentPrimary:      "#9B8EC4"   // Primary accent (LanguageToggle purple)
-    readonly property color accentSecondary:    "#8578B0"   // Pressed accent
-    readonly property color statusSuccess:      "#A3BE8C"   // Positive / success values
-    readonly property color statusWarning:      "#EBCB8B"   // Warning / attention values
+    property color accentPrimary:      SimbankPallete.accentPurpleBase
+    property color accentSecondary:    SimbankPallete.accentPurplePressed
+    property color statusSuccess:      SimbankPallete.statusGreen
+    property color statusWarning:      SimbankPallete.statusYellow
+
+    // ── Dynamic Themed Colors (Configurable) ──
+    property var   backgroundGradient:      SimbankPallete.backgroundGradient17
+    property color tileColor:               SimbankPallete.secondaryCobaltblue
+    property color categoryTileColor:       SimbankPallete.backgroundBlack
+    property color buttonColor:             SimbankPallete.secondaryBlueocean
+    property color backButtonColor:         SimbankPallete.secondaryBlueocean
+    property color languageToggleColor:     SimbankPallete.secondaryLightskyblue
+
+    // ── Per-component text colors ──
+    property color tileTextColor:           SimbankPallete.logoWhite
+    property color categoryTileTextColor:   SimbankPallete.logoWhite
+    property color buttonTextColor:         SimbankPallete.logoWhite
+    property color backButtonTextColor:     SimbankPallete.logoWhite
+
+    // ── Keyboard colors ──
+    property color keyboardBackground:      SimbankPallete.darkSurfacePrimary
+    property color keyColor:                SimbankPallete.darkSurfaceSecondary
+    property color keyHoverColor:           SimbankPallete.darkSurfaceHover
+    property color keyPressedColor:         SimbankPallete.darkSurfacePressed
+    property color keyTextColor:            SimbankPallete.textMainLight
+    property color keyHighlightTextColor:   SimbankPallete.logoWhite        // text on highlighted (e.g. active Shift) key
+    property color keyHighlightColor:       SimbankPallete.accentPurplePressed
+    property color keyAccentTextColor:      SimbankPallete.accentPurpleBase
+    property color keyPopupTextColor:       SimbankPallete.textMainLight    // language popup option label
+    property color keyPopupActiveTextColor: SimbankPallete.accentPurpleBase // active language option label + indicator
 
     // ── Typography ──
     readonly property string fontFamily:              SimbankPallete.fontFamily

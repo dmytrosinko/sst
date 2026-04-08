@@ -27,7 +27,7 @@ public:
 
     // Construct a service node
     explicit ServiceTreeItem(int serviceId, InputType inputType,
-                             const QString &name,
+                             const QString &name, const QString &size,
                              ServiceTreeItem *parent = nullptr);
 
     ~ServiceTreeItem();
@@ -45,6 +45,7 @@ public:
     int id() const;
     QString name() const;
     InputType inputType() const;
+    QString size() const;
 
 private:
     QList<ServiceTreeItem *> m_children;
@@ -55,6 +56,7 @@ private:
     int m_row = 0;
     QString m_name;
     InputType m_inputType = InputType::Default;
+    QString m_size = QStringLiteral("1x1");
 };
 
 } // namespace services

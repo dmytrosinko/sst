@@ -8,6 +8,7 @@ set_source_files_properties(qml/MainBackground.qml PROPERTIES QT_RESOURCE_ALIAS 
 set_source_files_properties(qml/PanelBackground.qml PROPERTIES QT_RESOURCE_ALIAS PanelBackground.qml)
 set_source_files_properties(qml/ServiceTileView.qml PROPERTIES QT_RESOURCE_ALIAS ServiceTileView.qml)
 set_source_files_properties(qml/GradientSelectionWindow.qml PROPERTIES QT_RESOURCE_ALIAS GradientSelectionWindow.qml)
+set_source_files_properties(qml/AttractModeOverlay.qml PROPERTIES QT_RESOURCE_ALIAS AttractModeOverlay.qml)
 qt_add_qml_module(${PROJECT_NAME}
     URI modules.${PROJECT_NAME}
     VERSION 1.0
@@ -21,4 +22,5 @@ qt_add_qml_module(${PROJECT_NAME}
         qml/PanelBackground.qml
         qml/ServiceTileView.qml
         qml/GradientSelectionWindow.qml
+        qml/AttractModeOverlay.qml
 )

@@ -19,15 +19,15 @@ Shape {
 
             GradientStop { 
                 position: 0.0 
-                color: SimbankPallete.currentBackgroundGradient ? SimbankPallete.currentBackgroundGradient[0] : "transparent"
+                color: Style.currentStyle.backgroundGradient ? Style.currentStyle.backgroundGradient[0] : "transparent"
             }
             GradientStop { 
-                position: SimbankPallete.currentBackgroundGradient && SimbankPallete.currentBackgroundGradient.length === 3 ? 0.5 : 1.0 
-                color: SimbankPallete.currentBackgroundGradient ? SimbankPallete.currentBackgroundGradient[1] : "transparent"
+                position: Style.currentStyle.backgroundGradient && Style.currentStyle.backgroundGradient.length === 3 ? 0.5 : 1.0 
+                color: Style.currentStyle.backgroundGradient ? Style.currentStyle.backgroundGradient[1] : "transparent"
             }
             GradientStop { 
                 position: 1.0 
-                color: SimbankPallete.currentBackgroundGradient ? (SimbankPallete.currentBackgroundGradient.length === 3 ? SimbankPallete.currentBackgroundGradient[2] : SimbankPallete.currentBackgroundGradient[1]) : "transparent"
+                color: Style.currentStyle.backgroundGradient ? (Style.currentStyle.backgroundGradient.length === 3 ? Style.currentStyle.backgroundGradient[2] : Style.currentStyle.backgroundGradient[1]) : "transparent"
             }
         }
     }

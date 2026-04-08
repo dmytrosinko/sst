@@ -27,7 +27,23 @@ QtObject {
 
     // Background Flat Colors
     readonly property color backgroundLightGrey: "#F0F3F7"
-    readonly property color backgroundBlack: "#F0F3F7"
+    readonly property color backgroundBlack: "#000000"
+
+    // Dark Theme Surface Colors
+    readonly property color darkSurfacePrimary: "#0A0A0F"
+    readonly property color darkSurfaceSecondary: "#141419"
+    readonly property color darkSurfaceHover: "#1E1E28"
+    readonly property color darkSurfacePressed: "#2A2A38"
+
+    // UI Structure Colors
+    readonly property color borderBright: "#808090"
+    readonly property color textMainLight: "#ECEFF4"
+    readonly property color textLabelGrey: "#A0A0B0"
+    readonly property color textHeadingPurple: "#B0A4D4"
+    readonly property color accentPurpleBase: "#9B8EC4"
+    readonly property color accentPurplePressed: "#8578B0"
+    readonly property color statusGreen: "#A3BE8C"
+    readonly property color statusYellow: "#EBCB8B"
 
     // Background Gradient Colors (Gradient direction 45°)
     readonly property var backgroundGradient1: ["#FFFCAD", "#FFA799"]
@@ -75,7 +91,6 @@ QtObject {
     readonly property color secondaryOrangepeach: "#F5A631"
     readonly property color secondaryCobaltblue: "#0974FF"
 
-    property var currentBackgroundGradient: backgroundGradient1
     readonly property var allBackgroundGradients: [
         backgroundGradient1, backgroundGradient2, backgroundGradient3, backgroundGradient4, backgroundGradient5,
         backgroundGradient6, backgroundGradient7, backgroundGradient8, backgroundGradient9, backgroundGradient10,
@@ -83,10 +98,6 @@ QtObject {
         backgroundGradient16, backgroundGradient17
     ]
 
-    property color currentTileColor: secondaryBlueocean
-    property color currentButtonColor: secondaryBlueocean
-    property color currentBackButtonColor: secondaryBlueocean
-    property color currentLanguageToggleSelectedColor: secondaryBlueocean
     readonly property var allSecondaryColors: [
         backgroundLightGrey, logoBlack,
         secondarySalmon, secondaryJuicypeach, secondaryLightorange, secondaryTuscansun,

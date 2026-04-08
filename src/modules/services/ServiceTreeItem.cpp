@@ -14,13 +14,14 @@ ServiceTreeItem::ServiceTreeItem(int categoryId, const QString &categoryName,
 
 // Service constructor
 ServiceTreeItem::ServiceTreeItem(int serviceId, InputType inputType,
-                                 const QString &name,
+                                 const QString &name, const QString &size,
                                  ServiceTreeItem *parent)
     : m_parent(parent)
     , m_nodeType(NodeType::Service)
     , m_id(serviceId)
     , m_name(name)
     , m_inputType(inputType)
+    , m_size(size)
 {
 }
 
@@ -80,6 +81,11 @@ QString ServiceTreeItem::name() const
 InputType ServiceTreeItem::inputType() const
 {
     return m_inputType;
+}
+
+QString ServiceTreeItem::size() const
+{
+    return m_size;
 }
 
 } // namespace services

@@ -17,10 +17,10 @@ Rectangle {
 
     // ── Styling ─────────────────────────────────────────────────────
     color: control.pressed
-           ? Qt.darker(SimbankPallete.currentBackButtonColor, 1.2)
+           ? Qt.darker(Style.currentStyle.backButtonColor, 1.2)
            : (control.hovered
-              ? Qt.lighter(SimbankPallete.currentBackButtonColor, 1.2)
-              : SimbankPallete.currentBackButtonColor)
+              ? Qt.lighter(Style.currentStyle.backButtonColor, 1.2)
+              : Style.currentStyle.backButtonColor)
     border.color: control.hovered
                   ? Style.currentStyle.borderAccent
                   : Style.currentStyle.borderDefault

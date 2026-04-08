@@ -83,6 +83,10 @@ QVariant ServiceTreeModel::data(const QModelIndex &index, int role) const
         if (item->nodeType() == ServiceTreeItem::NodeType::Service)
             return static_cast<int>(item->inputType());
         return QVariant();
+    case SizeRole:
+        if (item->nodeType() == ServiceTreeItem::NodeType::Service)
+            return item->size();
+        return QVariant();
     default:
         break;
     }
@@ -96,7 +100,8 @@ QHash<int, QByteArray> ServiceTreeModel::roleNames() const
         {NameRole, "name"},
         {IdRole, "itemId"},
         {NodeTypeRole, "nodeType"},
-        {InputTypeRole, "inputType"}
+        {InputTypeRole, "inputType"},
+        {SizeRole, "size"}
     };
 }
 
@@ -113,7 +118,7 @@ void ServiceTreeModel::addCategory(int categoryId, const QString &name)
 }
 
 void ServiceTreeModel::addService(int categoryId, int serviceId,
-                                  const QString &inputType, const QString &name)
+                                  const QString &inputType, const QString &name, const QString &size)
 {
     ServiceTreeItem *category = findCategory(categoryId);
     if (!category)
@@ -125,7 +130,7 @@ void ServiceTreeModel::addService(int categoryId, int serviceId,
     beginInsertRows(parentIndex, row, row);
     auto *service = new ServiceTreeItem(serviceId,
                                         inputTypeFromString(inputType),
-                                        name, category);
+                                        name, size, category);
     category->appendChild(service);
     endInsertRows();
 }
@@ -178,7 +183,8 @@ bool ServiceTreeModel::loadFromJsonResource(const QString &resourcePath)
             addService(catId,
                        svc[QLatin1String("id")].toInt(),
                        svc[QLatin1String("inputType")].toString(),
-                       svc[QLatin1String("name")].toString());
+                       svc[QLatin1String("name")].toString(),
+                       svc.contains(QLatin1String("size")) ? svc[QLatin1String("size")].toString() : QStringLiteral("1x1"));
         }
     }
 
@@ -223,7 +229,8 @@ void ServiceTreeModel::loadFromJsonResourceAsync(const QString &resourcePath)
                     addService(catId,
                                svc[QLatin1String("id")].toInt(),
                                svc[QLatin1String("inputType")].toString(),
-                               svc[QLatin1String("name")].toString());
+                               svc[QLatin1String("name")].toString(),
+                               svc.contains(QLatin1String("size")) ? svc[QLatin1String("size")].toString() : QStringLiteral("1x1"));
                 }
             }
             qDebug() << "ServiceTreeModel: async loaded" << categories.size() << "categories";

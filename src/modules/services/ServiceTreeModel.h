@@ -20,7 +20,8 @@ public:
         NameRole = Qt::UserRole + 1,
         IdRole,
         NodeTypeRole,
-        InputTypeRole
+        InputTypeRole,
+        SizeRole
     };
     Q_ENUM(Roles)
 
@@ -46,7 +47,7 @@ public:
     // API to populate the model
     Q_INVOKABLE void addCategory(int categoryId, const QString &name);
     Q_INVOKABLE void addService(int categoryId, int serviceId,
-                                const QString &inputType, const QString &name);
+                                const QString &inputType, const QString &name, const QString &size = QStringLiteral("1x1"));
 
     Q_INVOKABLE void clear();
     Q_INVOKABLE bool loadFromJsonResource(const QString &resourcePath);

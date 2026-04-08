@@ -24,10 +24,16 @@ qt_add_qml_module(${PROJECT_NAME}
         assets/logo.svg
         assets/icon_category.svg
         assets/icon_service.svg
+        assets/icons/0.svg
         assets/icons/1.svg
         assets/icons/2.svg
         assets/icons/3.svg
         assets/icons/4.svg
+        assets/icons/5.svg
+        assets/icons/6.svg
+        assets/icons/7.svg
+        assets/icons/8.svg
+        assets/icons/9.svg
         assets/icons/default.svg
         assets/icons/back_arrow.svg
         assets/icons/icon_card.svg

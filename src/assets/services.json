@@ -1,5 +1,23 @@
 [
     {
+        "id": 0,
+        "name": "Top Services",
+        "services": [
+            { "id": 101, "inputType": "phone",   "name": "Mobile Top-Up", "size": "2x2" },
+            { "id": 102, "inputType": "iban",    "name": "Bank Transfer", "size": "1x1" },
+            { "id": 401, "inputType": "account", "name": "Electricity", "size": "2x2" },
+            { "id": 402, "inputType": "account", "name": "Water", "size": "1x1" },
+            { "id": 302, "inputType": "phone",   "name": "Mobile Internet", "size": "1x1" },
+            { "id": 201, "inputType": "iban",    "name": "SWIFT Transfer", "size": "1x1" },
+            { "id": 103, "inputType": "account", "name": "Account Payment", "size": "2x2" },
+            { "id": 202, "inputType": "iban",    "name": "Internal Transfer", "size": "1x1" },
+            { "id": 303, "inputType": "default", "name": "SIM Registration", "size": "1x1" },
+            { "id": 301, "inputType": "phone",   "name": "Mobile Balance", "size": "1x1" },
+            { "id": 403, "inputType": "default", "name": "Gas", "size": "1x1" },
+            { "id": 501, "inputType": "default", "name": "Charity", "size": "2x2" }
+        ]
+    },
+    {
         "id": 1,
         "name": "Payments",
         "services": [
@@ -32,6 +50,48 @@
             { "id": 401, "inputType": "account", "name": "Electricity" },
             { "id": 402, "inputType": "account", "name": "Water" },
             { "id": 403, "inputType": "default", "name": "Gas" }
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Internet",
+        "services": [
+            { "id": 501, "inputType": "account", "name": "Broadband" },
+            { "id": 502, "inputType": "account", "name": "Fiber Optic" }
+        ]
+    },
+    {
+        "id": 6,
+        "name": "Gaming",
+        "services": [
+            { "id": 601, "inputType": "default", "name": "Steam Wallet" },
+            { "id": 602, "inputType": "default", "name": "PSN Code" },
+            { "id": 603, "inputType": "default", "name": "Xbox Live" }
+        ]
+    },
+    {
+        "id": 7,
+        "name": "TV",
+        "services": [
+            { "id": 701, "inputType": "account", "name": "Cable Subscription" },
+            { "id": 702, "inputType": "account", "name": "Netflix Pass" }
+        ]
+    },
+    {
+        "id": 8,
+        "name": "Taxes",
+        "services": [
+            { "id": 801, "inputType": "account", "name": "Property Tax" },
+            { "id": 802, "inputType": "account", "name": "Vehicle Tax" }
+        ]
+    },
+    {
+        "id": 9,
+        "name": "Charity",
+        "services": [
+            { "id": 901, "inputType": "default", "name": "Red Cross" },
+            { "id": 902, "inputType": "default", "name": "UNICEF" },
+            { "id": 903, "inputType": "default", "name": "Local Shelter" }
         ]
     }
 ]

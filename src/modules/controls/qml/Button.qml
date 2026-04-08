@@ -20,10 +20,10 @@ T.Button {
             if (!control.enabled)
                 return Style.currentStyle.surfaceSecondary
             if (control.down)
-                return Qt.darker(SimbankPallete.currentButtonColor, 1.2)
+                return Qt.darker(Style.currentStyle.buttonColor, 1.2)
             if (control.hovered)
-                return Qt.lighter(SimbankPallete.currentButtonColor, 1.2)
-            return SimbankPallete.currentButtonColor
+                return Qt.lighter(Style.currentStyle.buttonColor, 1.2)
+            return Style.currentStyle.buttonColor
         }
         border.color: {
             if (!control.enabled)
@@ -51,10 +51,10 @@ T.Button {
             if (!control.enabled)
                 return Style.currentStyle.textSecondary
             if (control.down)
-                return Style.currentStyle.textOnAccent
+                return Qt.darker(Style.currentStyle.buttonTextColor, 0.8)
             if (control.hovered)
-                return Style.currentStyle.textOnAccent
-            return Style.currentStyle.textPrimary
+                return Qt.lighter(Style.currentStyle.buttonTextColor, 1.1)
+            return Style.currentStyle.buttonTextColor
         }
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
