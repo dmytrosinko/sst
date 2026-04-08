@@ -38,10 +38,33 @@ Item {
         _buildAttractItems(currentPage)
     }
 
-    // Repick after a cycle completes (called by Home.qml via triggerRepick)
+    // Repick after a 30 s cycle: scroll to a different page, wait for scroll
+    // to settle, then pick 3 new tiles from that page.
     function _repickAttract() {
         if (!attractMode) return
-        _launchAttract()
+        if (topSection._pages.length === 0) return
+
+        // Gather pages with at least 3 tiles
+        var candidates = []
+        for (var p = 0; p < topSection._pages.length; p++) {
+            if (topSection._pages[p].length >= 3) candidates.push(p)
+        }
+        if (candidates.length === 0) return
+
+        // Prefer a different page from the current one
+        var currentPage = pageView.currentIndex
+        var otherPages  = candidates.filter(function(p) { return p !== currentPage })
+        var chosenPage  = otherPages.length > 0
+                          ? otherPages[Math.floor(Math.random() * otherPages.length)]
+                          : candidates[Math.floor(Math.random() * candidates.length)]
+
+        // Animated scroll to the chosen page
+        pageScrollAnim.to = chosenPage * pageView.width
+        pageScrollAnim.restart()
+
+        // After scroll settles, snapshot positions and start overlay
+        attractScrollTimer.chosenPage = chosenPage
+        attractScrollTimer.restart()
     }
 
     // Public: called by Home.qml when the overlay cycle finishes

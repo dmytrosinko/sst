@@ -53,6 +53,9 @@ Item {
     // Guard: false = position/scale changes snap instantly (no Behavior anim)
     property bool _behaviorsEnabled: false
 
+    // Clockwise rotation offset (0, 1, 2) — shifts tile positions in triangle
+    property int _rotationOffset: 0
+
     // ── Triangle positions ────────────────────────────────────────────────────
     //
     //  Layout (fixed, matching the screen layout):
@@ -104,7 +107,10 @@ Item {
     Rectangle {
         anchors.fill: parent
         color:   "black"
-        opacity: _phase === "IDLE" ? 0.0 : (_phase === "SETTLING" ? 0.35 : 0.62)
+        opacity: _phase === "IDLE" ? 0.0
+               : _phase === "SETTLING" ? 0.35
+               : _phase === "RETURNING" ? 0.20
+               : 0.62
         Behavior on opacity { NumberAnimation { duration: 400 } }
     }
 
@@ -174,22 +180,22 @@ Item {
 
             // ── Blurred outer glow ring ───────────────────────────────────
             // Sits behind the tile body; its blurred border bleeds outward.
-            Rectangle {
-                anchors.centerIn: parent
-                width:   att.width  + 28
-                height:  att.height + 28
-                radius:  att.width * 0.10
-                color:   "transparent"
-                border.color: Qt.rgba(0.608, 0.380, 1.0, overlay._glowOpacity)
-                border.width: 7
+            // Rectangle {
+            //     anchors.centerIn: parent
+            //     width:   att.width  + 28
+            //     height:  att.height + 28
+            //     radius:  att.width * 0.10
+            //     color:   "transparent"
+            //     border.color: Qt.rgba(0.608, 0.380, 1.0, overlay._glowOpacity)
+            //     border.width: 7
 
-                layer.enabled: overlay._phase !== "IDLE"
-                layer.effect: MultiEffect {
-                    blurEnabled: true
-                    blur:        0.80
-                    blurMax:     36
-                }
-            }
+            //     layer.enabled: overlay._phase !== "IDLE"
+            //     layer.effect: MultiEffect {
+            //         blurEnabled: true
+            //         blur:        0.80
+            //         blurMax:     36
+            //     }
+            // }
 
             // ── Crisp inner border ring ───────────────────────────────────
             Rectangle {
@@ -283,18 +289,18 @@ Item {
 
     // ── Glow pulse animation ──────────────────────────────────────────────────
     // Drives _glowOpacity  0.20 ↔ 1.00
-    SequentialAnimation {
-        id: glowAnim
-        loops: Animation.Infinite
-        NumberAnimation {
-            target: overlay;  property: "_glowOpacity"
-            from: 0.20;  to: 1.00;  duration: 850;  easing.type: Easing.InOutSine
-        }
-        NumberAnimation {
-            target: overlay;  property: "_glowOpacity"
-            from: 1.00;  to: 0.20;  duration: 850;  easing.type: Easing.InOutSine
-        }
-    }
+    // SequentialAnimation {
+    //     id: glowAnim
+    //     loops: Animation.Infinite
+    //     NumberAnimation {
+    //         target: overlay;  property: "_glowOpacity"
+    //         from: 0.20;  to: 1.00;  duration: 850;  easing.type: Easing.InOutSine
+    //     }
+    //     NumberAnimation {
+    //         target: overlay;  property: "_glowOpacity"
+    //         from: 1.00;  to: 0.20;  duration: 850;  easing.type: Easing.InOutSine
+    //     }
+    // }
 
     // ── Breathing scale animation ─────────────────────────────────────────────
     // Drives _pulseScale  1.00 → 1.10 → 1.00  (+10% pulse)
@@ -326,6 +332,30 @@ Item {
         }
     }
 
+    // Rotate tiles clockwise every 10 s during PULSING
+    Timer {
+        id: rotateTimer;  interval: 10000;  repeat: true
+        onTriggered: _rotateTiles()
+    }
+    // Re-disable behaviors and restart breathing after rotation settles
+    Timer {
+        id: rotateSettleTimer;  interval: 700;  repeat: false
+        onTriggered: {
+            _behaviorsEnabled = false
+            _pulseScale       = 1.0
+            breatheAnim.restart()   // restart breathing from 1.0
+        }
+    }
+
+    // After tiles have flown back (700ms), fade them out then finish cycle
+    Timer {
+        id: returnFadeTimer;  interval: 700;  repeat: false
+        onTriggered: {
+            _tileOpacity = 0.0   // fade out (300ms via Behavior)
+            returnTimer.restart()
+        }
+    }
+
     // ── Public functions ──────────────────────────────────────────────────────
 
     // Call with items[] already populated to begin the animation.
@@ -336,7 +366,8 @@ Item {
         _glowOpacity      = 0.0
         _pulseScale       = 1.0
         _tileOpacity      = 0.0
-        _behaviorsEnabled = false   // disable so initial snap is instant
+        _behaviorsEnabled = false
+        _rotationOffset   = 0   // disable so initial snap is instant
 
         // 1. Snap tiles instantly to their real on-screen source positions
         Qt.callLater(function() {
@@ -364,18 +395,22 @@ Item {
         _pulseScale       = 1.0
         _tileOpacity      = 0.0
         _behaviorsEnabled = false
+        _rotationOffset   = 0
         items             = []      // destroy tile delegates immediately
     }
 
     // ── Private ───────────────────────────────────────────────────────────────
 
     function _stopAll() {
-        glowAnim.stop()
+        //glowAnim.stop()
         breatheAnim.stop()
         cycleTimer.stop()
         settleTimer.stop()
         flyInTimer.stop()
+        returnFadeTimer.stop()
         returnTimer.stop()
+        rotateTimer.stop()
+        rotateSettleTimer.stop()
     }
 
     function _beginEntering() {
@@ -396,20 +431,53 @@ Item {
         _behaviorsEnabled = false   // let breatheAnim drive scale directly
         _glowOpacity      = 0.20
         _pulseScale       = 1.0
-        glowAnim.restart()
+        _rotationOffset   = 0
+        //glowAnim.restart()
         breatheAnim.restart()
         cycleTimer.restart()
+        rotateTimer.restart()
+    }
+
+    // Rotate tiles one step clockwise within the triangle
+    function _rotateTiles() {
+        if (_phase !== "PULSING") return
+
+        // 1. Stop breathing and reset scale to 1.0 before moving
+        breatheAnim.stop()
+        _pulseScale = 1.0
+        for (var i = 0; i < tileRepeater.count; i++) {
+            var t = tileRepeater.itemAt(i)
+            if (t) t.scale = 1.0
+        }
+
+        // 2. Rotate positions clockwise
+        _rotationOffset = (_rotationOffset + 1) % 3
+        _behaviorsEnabled = true
+        for (var j = 0; j < tileRepeater.count; j++) {
+            var tile = tileRepeater.itemAt(j)
+            if (!tile) continue
+            var slot = (j + _rotationOffset) % 3
+            tile.x = overlay._vx(slot)
+            tile.y = overlay._vy(slot)
+        }
+
+        // 3. After settle, disable behaviors and restart breathing
+        rotateSettleTimer.restart()
     }
 
     function _beginReturn() {
         _phase            = "RETURNING"
         _behaviorsEnabled = true    // re-enable for fly-back animation
-        glowAnim.stop()
+        rotateTimer.stop()
+        rotateSettleTimer.stop()
+        //glowAnim.stop()
         breatheAnim.stop()
-        _glowOpacity = 0.0
-        _pulseScale  = 1.0
+        _glowOpacity      = 0.0
+        _pulseScale       = 1.0
+        _rotationOffset   = 0
 
         // Fly tiles back to source positions, restoring original size
+        // (keep tiles fully visible so user sees the flight)
         for (var i = 0; i < tileRepeater.count; i++) {
             var t = tileRepeater.itemAt(i)
             if (!t) continue
@@ -418,8 +486,7 @@ Item {
             t.y     = s.srcY - _tileBase / 2
             t.scale = s.tileW / _tileBase   // back to real source size
         }
-        // Fade tiles out as they return
-        _tileOpacity = 0.0
-        returnTimer.restart()
+        // After tiles land, fade them out then signal cycle finished
+        returnFadeTimer.restart()
     }
 }
