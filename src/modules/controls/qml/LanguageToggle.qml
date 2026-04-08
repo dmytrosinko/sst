@@ -45,8 +45,8 @@ Item {
                     color: {
                         if (toggleBtn.isActive) {
                             return mouseArea.pressed
-                                   ? Style.currentStyle.accentSecondary
-                                   : Style.currentStyle.accentPrimary
+                                   ? Qt.darker(SimbankPallete.currentLanguageToggleSelectedColor, 1.2)
+                                   : SimbankPallete.currentLanguageToggleSelectedColor
                         }
                         return mouseArea.containsMouse
                                ? Style.currentStyle.textHeading

@@ -82,4 +82,18 @@ QtObject {
         backgroundGradient11, backgroundGradient12, backgroundGradient13, backgroundGradient14, backgroundGradient15,
         backgroundGradient16, backgroundGradient17
     ]
+
+    property color currentTileColor: secondaryBlueocean
+    property color currentButtonColor: secondaryBlueocean
+    property color currentBackButtonColor: secondaryBlueocean
+    property color currentLanguageToggleSelectedColor: secondaryBlueocean
+    readonly property var allSecondaryColors: [
+        backgroundLightGrey, logoBlack,
+        secondarySalmon, secondaryJuicypeach, secondaryLightorange, secondaryTuscansun,
+        secondaryOlivegreen, secondaryYellowgreen, secondaryTurquoise, secondaryTurkish,
+        secondaryLightskyblue, secondaryBlueocean, secondarySlateblue, secondaryMediumpurple,
+        secondarySweettomato, secondaryHotpink, secondaryIndianred, secondarySienna,
+        secondaryBurlywood, secondaryPersian, secondaryIndependence, secondarySlategray,
+        secondaryGreenapple, secondaryRedsalmon, secondaryOrangepeach, secondaryCobaltblue
+    ]
 }

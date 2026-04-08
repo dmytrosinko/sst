@@ -20,10 +20,10 @@ T.Button {
             if (!control.enabled)
                 return Style.currentStyle.surfaceSecondary
             if (control.down)
-                return Style.currentStyle.accentSecondary
+                return Qt.darker(SimbankPallete.currentButtonColor, 1.2)
             if (control.hovered)
-                return Style.currentStyle.accentPrimary
-            return Style.currentStyle.surfaceSecondary
+                return Qt.lighter(SimbankPallete.currentButtonColor, 1.2)
+            return SimbankPallete.currentButtonColor
         }
         border.color: {
             if (!control.enabled)

@@ -28,7 +28,7 @@ Rectangle {
 
     // ── Tile styling ────────────────────────────────────────────────
     radius: Math.min(width, height) * 0.08
-    color: "#000000"
+    color: SimbankPallete.currentTileColor
     clip: true
     border.color: tileMouseArea.containsMouse
                   ? Qt.rgba(0.6, 0.55, 0.77, 0.6)
