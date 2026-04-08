@@ -176,9 +176,19 @@ Window {
                     onColorPicked: function(c) { Style.currentStyle.buttonColor = c }
                 }
                 ColorPickerColumn {
+                    label: "Btn Disabled BG"
+                    currentColor: Style.currentStyle.buttonDisabledColor
+                    onColorPicked: function(c) { Style.currentStyle.buttonDisabledColor = c }
+                }
+                ColorPickerColumn {
                     label: "Back Button"
                     currentColor: Style.currentStyle.backButtonColor
                     onColorPicked: function(c) { Style.currentStyle.backButtonColor = c }
+                }
+                ColorPickerColumn {
+                    label: "Back Btn Dis BG"
+                    currentColor: Style.currentStyle.backButtonDisabledColor
+                    onColorPicked: function(c) { Style.currentStyle.backButtonDisabledColor = c }
                 }
                 ColorPickerColumn {
                     label: "Lang Toggle"
@@ -302,9 +312,24 @@ Window {
                     onColorPicked: function(c) { Style.currentStyle.buttonTextColor = c }
                 }
                 ColorPickerColumn {
+                    label: "Btn Text Disabled"
+                    currentColor: Style.currentStyle.buttonTextDisabledColor
+                    onColorPicked: function(c) { Style.currentStyle.buttonTextDisabledColor = c }
+                }
+                ColorPickerColumn {
                     label: "Back Btn Text"
                     currentColor: Style.currentStyle.backButtonTextColor
                     onColorPicked: function(c) { Style.currentStyle.backButtonTextColor = c }
+                }
+                ColorPickerColumn {
+                    label: "Back Btn Disabled"
+                    currentColor: Style.currentStyle.backButtonTextDisabledColor
+                    onColorPicked: function(c) { Style.currentStyle.backButtonTextDisabledColor = c }
+                }
+                ColorPickerColumn {
+                    label: "Lang Toggle Text"
+                    currentColor: Style.currentStyle.languageToggleTextColor
+                    onColorPicked: function(c) { Style.currentStyle.languageToggleTextColor = c }
                 }
 
                 // ── Separator ──
@@ -360,6 +385,31 @@ Window {
                     label: "Popup Active Text"
                     currentColor: Style.currentStyle.keyPopupActiveTextColor
                     onColorPicked: function(c) { Style.currentStyle.keyPopupActiveTextColor = c }
+                }
+
+                // ── Separator ──
+                Rectangle { width: 1; Layout.fillHeight: true; color: "#444" }
+
+                // ── Input field colors ──
+                ColorPickerColumn {
+                    label: "Input Text"
+                    currentColor: Style.currentStyle.inputTextColor
+                    onColorPicked: function(c) { Style.currentStyle.inputTextColor = c }
+                }
+                ColorPickerColumn {
+                    label: "Input Placeholder"
+                    currentColor: Style.currentStyle.inputPlaceholderColor
+                    onColorPicked: function(c) { Style.currentStyle.inputPlaceholderColor = c }
+                }
+                ColorPickerColumn {
+                    label: "Input Background"
+                    currentColor: Style.currentStyle.inputBackgroundColor
+                    onColorPicked: function(c) { Style.currentStyle.inputBackgroundColor = c }
+                }
+                ColorPickerColumn {
+                    label: "Input Border"
+                    currentColor: Style.currentStyle.inputBorderColor
+                    onColorPicked: function(c) { Style.currentStyle.inputBorderColor = c }
                 }
             }
         }

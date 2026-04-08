@@ -15,10 +15,10 @@ QtObject {
     property color borderStrong:       SimbankPallete.logoBlack
 
     // ── Text colors ──
-    property color textPrimary:        SimbankPallete.textMainLight
-    property color textSecondary:      SimbankPallete.textLabelGrey
+    property color textPrimary:        SimbankPallete.secondaryCobaltblue
+    property color textSecondary:      SimbankPallete.secondaryIndependence
     property color textOnAccent:       SimbankPallete.logoWhite
-    property color textHeading:        SimbankPallete.textHeadingPurple
+    property color textHeading:        SimbankPallete.secondaryBlack
 
     // ── Accent / status colors ──
     property color accentPrimary:      SimbankPallete.accentPurpleBase
@@ -31,14 +31,19 @@ QtObject {
     property color tileColor:               SimbankPallete.secondaryCobaltblue
     property color categoryTileColor:       SimbankPallete.backgroundBlack
     property color buttonColor:             SimbankPallete.secondaryBlueocean
+    property color buttonDisabledColor:     SimbankPallete.backgroundLightGrey
     property color backButtonColor:         SimbankPallete.secondaryBlueocean
+    property color backButtonDisabledColor: SimbankPallete.darkSurfaceSecondary
     property color languageToggleColor:     SimbankPallete.secondaryLightskyblue
 
     // ── Per-component text colors ──
-    property color tileTextColor:           SimbankPallete.logoWhite
-    property color categoryTileTextColor:   SimbankPallete.logoWhite
-    property color buttonTextColor:         SimbankPallete.logoWhite
-    property color backButtonTextColor:     SimbankPallete.logoWhite
+    property color tileTextColor:               SimbankPallete.logoWhite
+    property color categoryTileTextColor:       SimbankPallete.logoWhite
+    property color buttonTextColor:             SimbankPallete.logoWhite
+    property color buttonTextDisabledColor:     SimbankPallete.secondaryBlack
+    property color backButtonTextColor:         SimbankPallete.logoWhite
+    property color backButtonTextDisabledColor: Qt.rgba(1, 1, 1, 0.35)
+    property color languageToggleTextColor:     SimbankPallete.logoWhite
 
     // ── Keyboard colors ──
     property color keyboardBackground:      SimbankPallete.darkSurfacePrimary
@@ -51,6 +56,12 @@ QtObject {
     property color keyAccentTextColor:      SimbankPallete.accentPurpleBase
     property color keyPopupTextColor:       SimbankPallete.textMainLight    // language popup option label
     property color keyPopupActiveTextColor: SimbankPallete.accentPurpleBase // active language option label + indicator
+
+    // ── Input field colors ──
+    property color inputTextColor:          SimbankPallete.backgroundLightGrey
+    property color inputPlaceholderColor:   SimbankPallete.secondaryTurkish
+    property color inputBackgroundColor:    SimbankPallete.darkSurfaceSecondary
+    property color inputBorderColor:        SimbankPallete.accentPurpleBase
 
     // ── Typography ──
     readonly property string fontFamily:              SimbankPallete.fontFamily

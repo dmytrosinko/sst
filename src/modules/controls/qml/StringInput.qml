@@ -22,9 +22,9 @@ Item {
         id: bg
         anchors.fill: parent
         radius: 12
-        color: Style.currentStyle.surfaceSecondary
+        color: Style.currentStyle.inputBackgroundColor
         border.color: inputField.activeFocus
-                      ? Style.currentStyle.borderAccent
+                      ? Style.currentStyle.inputBorderColor
                       : Qt.rgba(0.608, 0.557, 0.769, 0.4)
         border.width: 1.5
 
@@ -57,7 +57,7 @@ Item {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter
 
-            color: Style.currentStyle.textPrimary
+            color: Style.currentStyle.inputTextColor
             font.pixelSize: 20
             font.letterSpacing: 0.5
             font.weight: Font.Medium
@@ -74,7 +74,7 @@ Item {
                 verticalAlignment: Text.AlignVCenter
                 visible: inputField.text.length === 0
                 text: root.placeholder
-                color: Style.currentStyle.textSecondary
+                color: Style.currentStyle.inputPlaceholderColor
                 font.pixelSize: inputField.font.pixelSize
                 font.italic: true
             }

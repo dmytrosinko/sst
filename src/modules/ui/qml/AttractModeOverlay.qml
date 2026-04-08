@@ -31,6 +31,7 @@ Item {
     property var items: []
 
     signal dismissed()
+    signal dismissFinished()       // emitted after the dismiss return animation ends
     signal serviceClicked(int serviceId, string serviceName, int inputType)
     signal cycleFinished()
 
@@ -52,6 +53,10 @@ Item {
 
     // Guard: false = position/scale changes snap instantly (no Behavior anim)
     property bool _behaviorsEnabled: false
+
+    // True when we are returning tiles because the user dismissed attract mode
+    // (as opposed to the 30 s cycle auto-return)
+    property bool _dismissing: false
 
     // Clockwise rotation offset (0, 1, 2) — shifts tile positions in triangle
     property int _rotationOffset: 0
@@ -328,7 +333,13 @@ Item {
             _glowOpacity = 0.0
             _pulseScale  = 1.0
             _tileOpacity = 0.0
-            overlay.cycleFinished()
+            if (_dismissing) {
+                _dismissing = false
+                items       = []   // destroy delegates
+                overlay.dismissFinished()
+            } else {
+                overlay.cycleFinished()
+            }
         }
     }
 
@@ -354,6 +365,12 @@ Item {
             _tileOpacity = 0.0   // fade out (300ms via Behavior)
             returnTimer.restart()
         }
+    }
+
+    // Clean up tile delegates after dismiss fade-out completes
+    Timer {
+        id: dismissTimer;  interval: 500;  repeat: false
+        onTriggered: items = []
     }
 
     // ── Public functions ──────────────────────────────────────────────────────
@@ -389,6 +406,13 @@ Item {
     }
 
     function stopAttract() {
+        if (_phase === "IDLE") return
+        _dismissing = true
+        _beginReturn()   // play return animation, then dismissFinished fires
+    }
+
+    // Instant cleanup with no animation (e.g. when launching a service)
+    function killAttract() {
         _stopAll()
         _phase            = "IDLE"
         _glowOpacity      = 0.0
@@ -396,7 +420,8 @@ Item {
         _tileOpacity      = 0.0
         _behaviorsEnabled = false
         _rotationOffset   = 0
-        items             = []      // destroy tile delegates immediately
+        _dismissing       = false
+        items             = []
     }
 
     // ── Private ───────────────────────────────────────────────────────────────
@@ -411,6 +436,7 @@ Item {
         returnTimer.stop()
         rotateTimer.stop()
         rotateSettleTimer.stop()
+        dismissTimer.stop()
     }
 
     function _beginEntering() {

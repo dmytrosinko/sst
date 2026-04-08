@@ -112,7 +112,6 @@ Item {
         sequence: "Ctrl+A"
         onActivated: {
             if (tileView.attractMode) {
-                tileView.attractMode = false
                 attractOverlay.stopAttract()
             } else {
                 tileView.attractMode = true
@@ -132,10 +131,13 @@ Item {
         headerHeight: headerBar.height   // 80
         footerHeight: 40
 
-        visible: tileView.attractMode
+        // Always visible — backdrop opacity handles visual show/hide
+        // so transitions animate smoothly (no snap on/off).
 
         onDismissed: {
             attractOverlay.stopAttract()
+        }
+        onDismissFinished: {
             tileView.attractMode = false
         }
         onCycleFinished: {
@@ -143,7 +145,7 @@ Item {
             tileView.triggerRepick()
         }
         onServiceClicked: function(serviceId, serviceName, inputType) {
-            attractOverlay.stopAttract()
+            attractOverlay.killAttract()
             tileView.attractMode = false
             ServiceModel.startService(serviceId, serviceName, inputType)
             serviceView.visible = true

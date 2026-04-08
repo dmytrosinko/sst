@@ -42,6 +42,7 @@ Item {
             font.letterSpacing: 1.2
             verticalAlignment: Text.AlignVCenter
             Layout.alignment: Qt.AlignVCenter
+            Layout.topMargin: 13
         }
 
         Item { Layout.fillWidth: true }

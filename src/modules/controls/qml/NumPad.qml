@@ -30,10 +30,10 @@ Item {
                 Layout.fillHeight: true
                 radius: Math.min(width, height) * 0.12
                 color: keyMa.pressed
-                       ? Style.currentStyle.surfacePressed
+                       ? Style.currentStyle.keyPressedColor
                        : (keyMa.containsMouse
-                          ? Style.currentStyle.surfaceHover
-                          : Style.currentStyle.surfaceSecondary)
+                          ? Style.currentStyle.keyHoverColor
+                          : Style.currentStyle.keyColor)
                 border.color: keyMa.containsMouse
                               ? Qt.rgba(0.608, 0.557, 0.769, 0.5)
                               : Qt.rgba(1, 1, 1, 0.08)
@@ -49,9 +49,9 @@ Item {
                     anchors.centerIn: parent
                     text: modelData
                     color: {
-                        if (modelData === "⌫") return Style.currentStyle.accentPrimary
+                        if (modelData === "⌫") return Style.currentStyle.keyAccentTextColor
                         if (modelData === "C") return Style.currentStyle.statusWarning
-                        return Style.currentStyle.textPrimary
+                        return Style.currentStyle.keyTextColor
                     }
                     font.pixelSize: Math.min(keyBtn.width, keyBtn.height) * 0.35
                     font.weight: Font.DemiBold

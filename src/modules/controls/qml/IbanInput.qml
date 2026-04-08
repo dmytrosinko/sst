@@ -59,9 +59,9 @@ Item {
         id: bg
         anchors.fill: parent
         radius:       12
-        color:        Style.currentStyle.surfaceSecondary
+        color:        Style.currentStyle.inputBackgroundColor
         border.color: inputField.activeFocus
-                      ? Style.currentStyle.borderAccent
+                      ? Style.currentStyle.inputBorderColor
                       : Qt.rgba(0.608, 0.557, 0.769, 0.4)
         border.width: 1.5
 
@@ -98,7 +98,7 @@ Item {
             Layout.alignment:  Qt.AlignVCenter
 
             readOnly:          true           // keyboard is virtual; no OS IME
-            color:             Style.currentStyle.textPrimary
+            color:             Style.currentStyle.inputTextColor
             font.pixelSize:    20
             font.letterSpacing: 2.5
             font.weight:       Font.Medium
@@ -111,7 +111,7 @@ Item {
                 verticalAlignment: Text.AlignVCenter
                 visible:          inputField.text.length === 0
                 text:             "KG_ _  _ _ _ _  _ _ _ _  _ _ _ _"
-                color:            Style.currentStyle.textSecondary
+                color:            Style.currentStyle.inputPlaceholderColor
                 font:             inputField.font
             }
         }

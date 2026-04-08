@@ -90,6 +90,7 @@ QtObject {
     readonly property color secondaryRedsalmon: "#F5473B"
     readonly property color secondaryOrangepeach: "#F5A631"
     readonly property color secondaryCobaltblue: "#0974FF"
+    readonly property color secondaryBlack: "#000000"
 
     readonly property var allBackgroundGradients: [
         backgroundGradient1, backgroundGradient2, backgroundGradient3, backgroundGradient4, backgroundGradient5,

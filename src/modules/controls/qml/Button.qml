@@ -18,7 +18,7 @@ T.Button {
         radius: height / 2
         color: {
             if (!control.enabled)
-                return Style.currentStyle.surfaceSecondary
+                return Style.currentStyle.buttonDisabledColor
             if (control.down)
                 return Qt.darker(Style.currentStyle.buttonColor, 1.2)
             if (control.hovered)
@@ -45,11 +45,11 @@ T.Button {
     contentItem: Text {
         text: control.text
         font.pixelSize: 15
-        font.weight: control.hovered && control.enabled ? Font.DemiBold : Font.Normal
+        font.weight: control.hovered && control.enabled ? Font.Bold : Font.Bold
         font.letterSpacing: 0.5
         color: {
             if (!control.enabled)
-                return Style.currentStyle.textSecondary
+                return Style.currentStyle.buttonTextDisabledColor
             if (control.down)
                 return Qt.darker(Style.currentStyle.buttonTextColor, 0.8)
             if (control.hovered)

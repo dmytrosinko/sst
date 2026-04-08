@@ -10,8 +10,8 @@ T.TextField {
                              contentHeight + topPadding + bottomPadding)
 
     activeFocusOnPress: true
-    color: Style.currentStyle.textPrimary
-    selectedTextColor: Style.currentStyle.textPrimary
+    color: Style.currentStyle.inputTextColor
+    selectedTextColor: Style.currentStyle.inputTextColor
     selectionColor: Style.currentStyle.accentPrimary
 
     font.pixelSize: Style.currentStyle.fontSizeNormal
@@ -21,9 +21,9 @@ T.TextField {
     background: Rectangle {
         implicitWidth: 200
         implicitHeight: 40
-        color: Style.currentStyle.surfaceSecondary
+        color: Style.currentStyle.inputBackgroundColor
         border.color: control.activeFocus
-                      ? Style.currentStyle.borderAccent
+                      ? Style.currentStyle.inputBorderColor
                       : Style.currentStyle.borderDefault
         border.width: 2
         radius: 6
