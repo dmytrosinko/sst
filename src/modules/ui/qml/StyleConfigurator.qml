@@ -86,7 +86,7 @@ Window {
 
     function generateQml() {
         var s   = Style.currentStyle
-        var pm  = buildPaletteMap()
+        var pm  = root._paletteMap
         var c   = function(v) { return colorToRef(v, pm) }
         return [
             "pragma Singleton",
@@ -167,6 +167,7 @@ Window {
 
     // ── Groups definition ──────────────────────────────────────────────
     property int activeGroup: 0
+    property var _paletteMap: buildPaletteMap()
 
     readonly property var groups: [
         {

@@ -9,19 +9,23 @@ ServiceTreeItem::ServiceTreeItem(int categoryId, const QString &categoryName,
     , m_nodeType(NodeType::Category)
     , m_id(categoryId)
     , m_name(categoryName)
+    , m_nameUtf8(categoryName.toUtf8())
 {
 }
 
 // Service constructor
 ServiceTreeItem::ServiceTreeItem(int serviceId, InputType inputType,
                                  const QString &name, const QString &size,
+                                 const QJsonArray &fields,
                                  ServiceTreeItem *parent)
     : m_parent(parent)
     , m_nodeType(NodeType::Service)
     , m_id(serviceId)
     , m_name(name)
+    , m_nameUtf8(name.toUtf8())
     , m_inputType(inputType)
     , m_size(size)
+    , m_fields(fields)
 {
 }
 
@@ -83,9 +87,19 @@ InputType ServiceTreeItem::inputType() const
     return m_inputType;
 }
 
+const QByteArray &ServiceTreeItem::nameUtf8() const
+{
+    return m_nameUtf8;
+}
+
 QString ServiceTreeItem::size() const
 {
     return m_size;
+}
+
+QJsonArray ServiceTreeItem::fields() const
+{
+    return m_fields;
 }
 
 } // namespace services

@@ -50,9 +50,9 @@ Item {
             anchors.fill: parent
             visible: !serviceView.visible
 
-            onServiceSelected: function(serviceId, serviceName, inputType) {
+            onServiceSelected: function(serviceId, serviceName, inputType, fields) {
                 console.log("Selected service:", serviceId, serviceName, inputType)
-                ServiceModel.startService(serviceId, serviceName, inputType)
+                ServiceModel.startService(serviceId, serviceName, inputType, fields)
                 serviceView.visible = true
                 serviceView.showInputScreen()
             }
@@ -119,6 +119,11 @@ Item {
         }
     }
 
+    Shortcut {
+        sequence: "Ctrl+E"
+        onActivated: emulatorWindowLoader.active = !emulatorWindowLoader.active
+    }
+
     // ── Attract-mode overlay (full Home size) ───────────────────────
     AttractModeOverlay {
         id: attractOverlay
@@ -183,5 +188,11 @@ Item {
         id: gradientWindowLoader
         active: false
         source: "StyleConfigurator.qml"
+    }
+
+    Loader {
+        id: emulatorWindowLoader
+        active: false
+        source: "ValidatorEmulatorWindow.qml"
     }
 }

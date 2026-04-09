@@ -11,7 +11,6 @@ set_source_files_properties(qml/IbanInput.qml PROPERTIES QT_RESOURCE_ALIAS IbanI
 set_source_files_properties(qml/NumberInput.qml PROPERTIES QT_RESOURCE_ALIAS NumberInput.qml)
 set_source_files_properties(qml/StringInput.qml PROPERTIES QT_RESOURCE_ALIAS StringInput.qml)
 set_source_files_properties(qml/NumPad.qml PROPERTIES QT_RESOURCE_ALIAS NumPad.qml)
-set_source_files_properties(qml/AlphaKeyboard.qml PROPERTIES QT_RESOURCE_ALIAS AlphaKeyboard.qml)
 set_source_files_properties(qml/StringKeyboard.qml PROPERTIES QT_RESOURCE_ALIAS StringKeyboard.qml)
 set_source_files_properties(qml/CashValidator.qml PROPERTIES QT_RESOURCE_ALIAS CashValidator.qml)
 

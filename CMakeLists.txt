@@ -16,6 +16,7 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/output/${BUNDLE}-${PROJECT_VERSION}
 set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME ${BUNDLE})
 
 option(WITH_TESTS "Build unit tests" OFF)
+option(USE_DEVICE_EMULATOR "Use device emulators instead of real hardware drivers" ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick Test QuickTest)
 qt_standard_project_setup(REQUIRES 6.10)

@@ -2,7 +2,7 @@
 
 #include <QObject>
 #include <QTranslator>
-#include <QGuiApplication>
+
 #include <QtQml/qqmlregistration.h>
 
 class TranslationManager : public QObject

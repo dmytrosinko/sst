@@ -192,23 +192,7 @@ Item {
             }
 
             // ── Blurred outer glow ring ───────────────────────────────────
-            // Sits behind the tile body; its blurred border bleeds outward.
-            // Rectangle {
-            //     anchors.centerIn: parent
-            //     width:   att.width  + 28
-            //     height:  att.height + 28
-            //     radius:  att.width * 0.10
-            //     color:   "transparent"
-            //     border.color: Qt.rgba(0.608, 0.380, 1.0, overlay._glowOpacity)
-            //     border.width: 7
 
-            //     layer.enabled: overlay._phase !== "IDLE"
-            //     layer.effect: MultiEffect {
-            //         blurEnabled: true
-            //         blur:        0.80
-            //         blurMax:     36
-            //     }
-            // }
 
             // ── Crisp inner border ring ───────────────────────────────────
             Rectangle {
@@ -301,19 +285,7 @@ Item {
     }
 
     // ── Glow pulse animation ──────────────────────────────────────────────────
-    // Drives _glowOpacity  0.20 ↔ 1.00
-    // SequentialAnimation {
-    //     id: glowAnim
-    //     loops: Animation.Infinite
-    //     NumberAnimation {
-    //         target: overlay;  property: "_glowOpacity"
-    //         from: 0.20;  to: 1.00;  duration: 850;  easing.type: Easing.InOutSine
-    //     }
-    //     NumberAnimation {
-    //         target: overlay;  property: "_glowOpacity"
-    //         from: 1.00;  to: 0.20;  duration: 850;  easing.type: Easing.InOutSine
-    //     }
-    // }
+
 
     // ── Breathing scale animation ─────────────────────────────────────────────
     // Drives _pulseScale  1.00 → 1.10 → 1.00  (+10% pulse)

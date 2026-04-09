@@ -17,9 +17,4 @@ public:
 
     // Returns true on success. fileUrl may be a file:// URL or a local path string.
     Q_INVOKABLE bool writeFile(const QUrl &fileUrl, const QString &content) const;
-
-    // QML_SINGLETON factory (required by Qt 6 singleton registration)
-    static FileWriter *create(QQmlEngine *, QJSEngine *) {
-        return new FileWriter();
-    }
 };

@@ -1,4 +1,4 @@
-#include <QCoreApplication>
+
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QtQml>
@@ -13,6 +13,8 @@ int main(int argc, char *argv[]) {
       if (!families.isEmpty()) {
           QGuiApplication::setFont(QFont(families.at(0)));
       }
+  } else {
+      qWarning("Failed to load application font EuclidCircularB-Regular.ttf");
   }
 
   QQmlApplicationEngine engine;

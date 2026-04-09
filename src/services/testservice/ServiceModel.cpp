@@ -1,5 +1,5 @@
 #include "ServiceModel.h"
-#include "../../modules/services/ServiceTreeItem.h"
+#include "ServiceTreeItem.h"
 
 namespace test {
 
@@ -26,11 +26,18 @@ int ServiceModel::inputType() const
     return m_inputType;
 }
 
-void ServiceModel::startService(int id, const QString &name, int type)
+QJsonArray ServiceModel::fields() const
+{
+    return m_fields;
+}
+
+void ServiceModel::startService(int id, const QString &name, int type,
+                                const QJsonArray &fields)
 {
     m_serviceId = id;
     m_serviceName = name;
     m_inputType = type;
+    m_fields = fields;
     emit serviceChanged();
 }
 
@@ -39,6 +46,7 @@ void ServiceModel::clearService()
     m_serviceId = 0;
     m_serviceName.clear();
     m_inputType = kDefaultInputType;
+    m_fields = QJsonArray();
     emit serviceChanged();
 }
 

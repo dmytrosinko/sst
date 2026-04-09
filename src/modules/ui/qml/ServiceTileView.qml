@@ -9,7 +9,7 @@ import modules.controls
 Item {
     id: root
 
-    signal serviceSelected(int serviceId, string serviceName, int inputType)
+    signal serviceSelected(int serviceId, string serviceName, int inputType, var fields)
 
     // Emitted when 3 attract tiles are ready; positions are in tileView's
     // own coordinate space so the caller (Home.qml) can map them further.
@@ -89,7 +89,7 @@ Item {
 
             var tileW = (svc.colSpan || 1) * topSection._stride - 20
             var tileH = (svc.rowSpan || 1) * topSection._stride - 20
-             console.log("--p-",k, svc.colSpan, svc.rowSpan, JSON.stringify(svc), tileW, tileH)
+
             // Compute grid canvas offsets within each page delegate.
             // gridCanvas is anchors.horizontalCenter (X centered) but anchors.top (Y = 0).
             var pageDelegate = pageView.itemAtIndex(pageIdx)
@@ -236,11 +236,18 @@ Item {
 
         // ── Page building ────────────────────────────────────────────
         property var _pages: []
+        property var _pageCache: ({})
         property int _gridCols: Math.max(1, Math.floor((width + 20) / 170))
         readonly property int _gridRows: 3
         readonly property int _stride: 170  // 150px tile + 20px gap
 
         function _buildPages() {
+            var cacheKey = root.selectedCategoryId
+            if (topSection._pageCache[cacheKey] !== undefined) {
+                topSection._pages = topSection._pageCache[cacheKey]
+                return
+            }
+
             var cols = topSection._gridCols
             var rows = topSection._gridRows
 
@@ -299,6 +306,7 @@ Item {
                     itemId:    entry.model.itemId,
                     name:      entry.model.name,
                     inputType: entry.model.inputType,
+                    fields:    entry.model.fields || [],
                     size:      sz,
                     colSpan:   w,
                     rowSpan:   h,
@@ -307,6 +315,7 @@ Item {
                 })
             }
             if (page.length > 0) allPages.push(page)
+            topSection._pageCache[cacheKey] = allPages
             _pages = allPages
         }
 
@@ -392,7 +401,7 @@ Item {
                                 label: svc ? svc.name : ""
 
                                 onClicked: {
-                                    if (svc) root.serviceSelected(svc.itemId, svc.name, svc.inputType)
+                                    if (svc) root.serviceSelected(svc.itemId, svc.name, svc.inputType, svc.fields || [])
                                 }
                             }
                         }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QAbstractItemModel>
+#include <QHash>
 #include <QObject>
 #include <QtQml/qqmlregistration.h>
 
@@ -21,7 +22,8 @@ public:
         IdRole,
         NodeTypeRole,
         InputTypeRole,
-        SizeRole
+        SizeRole,
+        FieldsRole
     };
     Q_ENUM(Roles)
 
@@ -47,7 +49,9 @@ public:
     // API to populate the model
     Q_INVOKABLE void addCategory(int categoryId, const QString &name);
     Q_INVOKABLE void addService(int categoryId, int serviceId,
-                                const QString &inputType, const QString &name, const QString &size = QStringLiteral("1x1"));
+                                const QString &inputType, const QString &name,
+                                const QString &size = QStringLiteral("1x1"),
+                                const QJsonArray &fields = {});
 
     Q_INVOKABLE void clear();
     Q_INVOKABLE bool loadFromJsonResource(const QString &resourcePath);
@@ -72,6 +76,7 @@ private:
     void emitAllNamesChanged(const QModelIndex &parent = {});
 
     ServiceTreeItem *m_rootItem = nullptr;
+    QHash<int, ServiceTreeItem*> m_categoryMap;
     int m_translationRevision = 0;
 };
 

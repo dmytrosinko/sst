@@ -7,6 +7,7 @@ add_subdirectory(modules/controls)
 add_subdirectory(modules/style)
 add_subdirectory(modules/ui)
 add_subdirectory(modules/services)
+add_subdirectory(modules/finance)
 add_subdirectory(services/testservice)
 
 qt_add_executable(${PROJECT_NAME}
@@ -55,7 +56,7 @@ qt_add_translations(${PROJECT_NAME}
         translations/sst_en.ts
         translations/sst_ky.ts
         translations/sst_ru.ts
-    SOURCE_TARGETS ${PROJECT_NAME} hardware controls style ui services testservice
+    SOURCE_TARGETS ${PROJECT_NAME} hardware controls style ui services finance testservice
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -67,7 +68,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 
 target_link_libraries(${PROJECT_NAME}
-    PRIVATE Qt6::Quick Qt6::Gui Qt6::QuickDialogs2 hardwareplugin controlsplugin styleplugin uiplugin servicesplugin testserviceplugin
+    PRIVATE Qt6::Quick Qt6::Gui Qt6::QuickDialogs2 hardwareplugin controlsplugin styleplugin uiplugin servicesplugin financeplugin testserviceplugin
 )
 
 include(GNUInstallDirs)

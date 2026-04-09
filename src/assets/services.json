@@ -3,44 +3,227 @@
         "id": 0,
         "name": "Top Services",
         "services": [
-            { "id": 101, "inputType": "phone",   "name": "Mobile Top-Up", "size": "3x2" },
-            { "id": 102, "inputType": "iban",    "name": "Bank Transfer", "size": "2x2" },
-            { "id": 401, "inputType": "account", "name": "Electricity", "size": "2x1" },
-            { "id": 402, "inputType": "account", "name": "Water", "size": "1x1" },
-            { "id": 302, "inputType": "phone",   "name": "Mobile Internet", "size": "1x1" },
-            { "id": 201, "inputType": "iban",    "name": "SWIFT Transfer", "size": "1x1" },
-            { "id": 103, "inputType": "account", "name": "Account Payment", "size": "1x1" },
-            { "id": 202, "inputType": "iban",    "name": "Internal Transfer", "size": "1x1" },
-            { "id": 303, "inputType": "default", "name": "SIM Registration", "size": "1x1" },
-            { "id": 301, "inputType": "phone",   "name": "Mobile Balance", "size": "1x1" },
-            { "id": 403, "inputType": "default", "name": "Gas", "size": "1x1" },
-            { "id": 501, "inputType": "default", "name": "Charity", "size": "1x1" },
+            {
+                "id": 101, "inputType": "phone", "name": "Mobile Top-Up", "size": "3x2",
+                "fields": [
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            },
+            {
+                "id": 102, "inputType": "iban", "name": "Bank Transfer", "size": "2x2",
+                "fields": [
+                    { "key": "iban", "label": "IBAN Number", "inputType": "iban", "regex": "^[A-Z]{2}\\d{2}[A-Z0-9]{4,30}$", "required": true },
+                    { "key": "recipient", "label": "Recipient Name", "inputType": "string", "regex": "^.{2,100}$", "required": true }
+                ]
+            },
+            {
+                "id": 401, "inputType": "account", "name": "Electricity", "size": "2x1",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 402, "inputType": "account", "name": "Water", "size": "1x1",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 302, "inputType": "phone", "name": "Mobile Internet", "size": "1x1",
+                "fields": [
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            },
+            {
+                "id": 201, "inputType": "iban", "name": "SWIFT Transfer", "size": "1x1",
+                "fields": [
+                    { "key": "iban", "label": "IBAN Number", "inputType": "iban", "regex": "^[A-Z]{2}\\d{2}[A-Z0-9]{4,30}$", "required": true },
+                    { "key": "swift", "label": "SWIFT/BIC Code", "inputType": "string", "regex": "^[A-Z]{6}[A-Z0-9]{2,5}$", "required": true }
+                ]
+            },
+            {
+                "id": 103, "inputType": "account", "name": "Account Payment", "size": "1x1",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 202, "inputType": "iban", "name": "Internal Transfer", "size": "1x1",
+                "fields": [
+                    { "key": "iban", "label": "IBAN Number", "inputType": "iban", "regex": "^[A-Z]{2}\\d{2}[A-Z0-9]{4,30}$", "required": true }
+                ]
+            },
+            {
+                "id": 303, "inputType": "default", "name": "SIM Registration", "size": "1x1",
+                "fields": [
+                    { "key": "fullName", "label": "Full Name", "inputType": "string", "regex": "^.{2,100}$", "required": true },
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            },
+            {
+                "id": 301, "inputType": "phone", "name": "Mobile Balance", "size": "1x1",
+                "fields": [
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            },
+            {
+                "id": 403, "inputType": "default", "name": "Gas", "size": "1x1",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 501, "inputType": "default", "name": "Charity", "size": "1x1",
+                "fields": []
+            },
 
-            { "id": 101, "inputType": "phone",   "name": "Mobile Top-Up", "size": "2x3" },
-            { "id": 102, "inputType": "iban",    "name": "Bank Transfer", "size": "2x1" },
-            { "id": 401, "inputType": "account", "name": "Electricity", "size": "1x1" },
-            { "id": 402, "inputType": "account", "name": "Water", "size": "1x1" },
-            { "id": 302, "inputType": "phone",   "name": "Mobile Internet", "size": "1x1" },
-            { "id": 201, "inputType": "iban",    "name": "SWIFT Transfer", "size": "2x2" },
-            { "id": 103, "inputType": "account", "name": "Account Payment", "size": "1x1" },
-            { "id": 202, "inputType": "iban",    "name": "Internal Transfer", "size": "1x1" },
-            { "id": 303, "inputType": "default", "name": "SIM Registration", "size": "1x1" },
-            { "id": 301, "inputType": "phone",   "name": "Mobile Balance", "size": "1x1" },
-            { "id": 403, "inputType": "default", "name": "Gas", "size": "1x1" },
-            { "id": 501, "inputType": "default", "name": "Charity", "size": "1x1" },
+            {
+                "id": 101, "inputType": "phone", "name": "Mobile Top-Up", "size": "2x3",
+                "fields": [
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            },
+            {
+                "id": 102, "inputType": "iban", "name": "Bank Transfer", "size": "2x1",
+                "fields": [
+                    { "key": "iban", "label": "IBAN Number", "inputType": "iban", "regex": "^[A-Z]{2}\\d{2}[A-Z0-9]{4,30}$", "required": true },
+                    { "key": "recipient", "label": "Recipient Name", "inputType": "string", "regex": "^.{2,100}$", "required": true }
+                ]
+            },
+            {
+                "id": 401, "inputType": "account", "name": "Electricity", "size": "1x1",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 402, "inputType": "account", "name": "Water", "size": "1x1",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 302, "inputType": "phone", "name": "Mobile Internet", "size": "1x1",
+                "fields": [
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            },
+            {
+                "id": 201, "inputType": "iban", "name": "SWIFT Transfer", "size": "2x2",
+                "fields": [
+                    { "key": "iban", "label": "IBAN Number", "inputType": "iban", "regex": "^[A-Z]{2}\\d{2}[A-Z0-9]{4,30}$", "required": true },
+                    { "key": "swift", "label": "SWIFT/BIC Code", "inputType": "string", "regex": "^[A-Z]{6}[A-Z0-9]{2,5}$", "required": true }
+                ]
+            },
+            {
+                "id": 103, "inputType": "account", "name": "Account Payment", "size": "1x1",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 202, "inputType": "iban", "name": "Internal Transfer", "size": "1x1",
+                "fields": [
+                    { "key": "iban", "label": "IBAN Number", "inputType": "iban", "regex": "^[A-Z]{2}\\d{2}[A-Z0-9]{4,30}$", "required": true }
+                ]
+            },
+            {
+                "id": 303, "inputType": "default", "name": "SIM Registration", "size": "1x1",
+                "fields": [
+                    { "key": "fullName", "label": "Full Name", "inputType": "string", "regex": "^.{2,100}$", "required": true },
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            },
+            {
+                "id": 301, "inputType": "phone", "name": "Mobile Balance", "size": "1x1",
+                "fields": [
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            },
+            {
+                "id": 403, "inputType": "default", "name": "Gas", "size": "1x1",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 501, "inputType": "default", "name": "Charity", "size": "1x1",
+                "fields": []
+            },
 
-            { "id": 101, "inputType": "phone",   "name": "Mobile Top-Up", "size": "3x3" },
-            { "id": 102, "inputType": "iban",    "name": "Bank Transfer", "size": "1x1" },
-            { "id": 401, "inputType": "account", "name": "Electricity", "size": "1x1" },
-            { "id": 402, "inputType": "account", "name": "Water", "size": "1x1" },
-            { "id": 302, "inputType": "phone",   "name": "Mobile Internet", "size": "1x1" },
-            { "id": 201, "inputType": "iban",    "name": "SWIFT Transfer", "size": "1x1" },
-            { "id": 103, "inputType": "account", "name": "Account Payment", "size": "1x1" },
-            { "id": 202, "inputType": "iban",    "name": "Internal Transfer", "size": "1x1" },
-            { "id": 303, "inputType": "default", "name": "SIM Registration", "size": "1x1" },
-            { "id": 301, "inputType": "phone",   "name": "Mobile Balance", "size": "1x1" },
-            { "id": 403, "inputType": "default", "name": "Gas", "size": "1x1" },
-            { "id": 501, "inputType": "default", "name": "Charity", "size": "1x1" }
+            {
+                "id": 101, "inputType": "phone", "name": "Mobile Top-Up", "size": "3x3",
+                "fields": [
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            },
+            {
+                "id": 102, "inputType": "iban", "name": "Bank Transfer", "size": "1x1",
+                "fields": [
+                    { "key": "iban", "label": "IBAN Number", "inputType": "iban", "regex": "^[A-Z]{2}\\d{2}[A-Z0-9]{4,30}$", "required": true },
+                    { "key": "recipient", "label": "Recipient Name", "inputType": "string", "regex": "^.{2,100}$", "required": true }
+                ]
+            },
+            {
+                "id": 401, "inputType": "account", "name": "Electricity", "size": "1x1",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 402, "inputType": "account", "name": "Water", "size": "1x1",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 302, "inputType": "phone", "name": "Mobile Internet", "size": "1x1",
+                "fields": [
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            },
+            {
+                "id": 201, "inputType": "iban", "name": "SWIFT Transfer", "size": "1x1",
+                "fields": [
+                    { "key": "iban", "label": "IBAN Number", "inputType": "iban", "regex": "^[A-Z]{2}\\d{2}[A-Z0-9]{4,30}$", "required": true },
+                    { "key": "swift", "label": "SWIFT/BIC Code", "inputType": "string", "regex": "^[A-Z]{6}[A-Z0-9]{2,5}$", "required": true }
+                ]
+            },
+            {
+                "id": 103, "inputType": "account", "name": "Account Payment", "size": "1x1",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 202, "inputType": "iban", "name": "Internal Transfer", "size": "1x1",
+                "fields": [
+                    { "key": "iban", "label": "IBAN Number", "inputType": "iban", "regex": "^[A-Z]{2}\\d{2}[A-Z0-9]{4,30}$", "required": true }
+                ]
+            },
+            {
+                "id": 303, "inputType": "default", "name": "SIM Registration", "size": "1x1",
+                "fields": [
+                    { "key": "fullName", "label": "Full Name", "inputType": "string", "regex": "^.{2,100}$", "required": true },
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            },
+            {
+                "id": 301, "inputType": "phone", "name": "Mobile Balance", "size": "1x1",
+                "fields": [
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            },
+            {
+                "id": 403, "inputType": "default", "name": "Gas", "size": "1x1",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 501, "inputType": "default", "name": "Charity", "size": "1x1",
+                "fields": []
+            }
 
         ]
     },
@@ -48,77 +231,185 @@
         "id": 1,
         "name": "Payments",
         "services": [
-            { "id": 101, "inputType": "phone",   "name": "Mobile Top-Up" },
-            { "id": 102, "inputType": "iban",    "name": "Bank Transfer" },
-            { "id": 103, "inputType": "account", "name": "Account Payment" }
+            {
+                "id": 101, "inputType": "phone", "name": "Mobile Top-Up",
+                "fields": [
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            },
+            {
+                "id": 102, "inputType": "iban", "name": "Bank Transfer",
+                "fields": [
+                    { "key": "iban", "label": "IBAN Number", "inputType": "iban", "regex": "^[A-Z]{2}\\d{2}[A-Z0-9]{4,30}$", "required": true },
+                    { "key": "recipient", "label": "Recipient Name", "inputType": "string", "regex": "^.{2,100}$", "required": true }
+                ]
+            },
+            {
+                "id": 103, "inputType": "account", "name": "Account Payment",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            }
         ]
     },
     {
         "id": 2,
         "name": "Transfers",
         "services": [
-            { "id": 201, "inputType": "iban", "name": "SWIFT Transfer" },
-            { "id": 202, "inputType": "iban", "name": "Internal Transfer" }
+            {
+                "id": 201, "inputType": "iban", "name": "SWIFT Transfer",
+                "fields": [
+                    { "key": "iban", "label": "IBAN Number", "inputType": "iban", "regex": "^[A-Z]{2}\\d{2}[A-Z0-9]{4,30}$", "required": true },
+                    { "key": "swift", "label": "SWIFT/BIC Code", "inputType": "string", "regex": "^[A-Z]{6}[A-Z0-9]{2,5}$", "required": true }
+                ]
+            },
+            {
+                "id": 202, "inputType": "iban", "name": "Internal Transfer",
+                "fields": [
+                    { "key": "iban", "label": "IBAN Number", "inputType": "iban", "regex": "^[A-Z]{2}\\d{2}[A-Z0-9]{4,30}$", "required": true }
+                ]
+            }
         ]
     },
     {
         "id": 3,
         "name": "Mobile",
         "services": [
-            { "id": 301, "inputType": "phone",   "name": "Mobile Balance" },
-            { "id": 302, "inputType": "phone",   "name": "Mobile Internet" },
-            { "id": 303, "inputType": "default", "name": "SIM Registration" }
+            {
+                "id": 301, "inputType": "phone", "name": "Mobile Balance",
+                "fields": [
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            },
+            {
+                "id": 302, "inputType": "phone", "name": "Mobile Internet",
+                "fields": [
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            },
+            {
+                "id": 303, "inputType": "default", "name": "SIM Registration",
+                "fields": [
+                    { "key": "fullName", "label": "Full Name", "inputType": "string", "regex": "^.{2,100}$", "required": true },
+                    { "key": "phone", "label": "Phone Number", "inputType": "phone", "regex": "^\\d{9,12}$", "required": true }
+                ]
+            }
         ]
     },
     {
         "id": 4,
         "name": "Utilities",
         "services": [
-            { "id": 401, "inputType": "account", "name": "Electricity" },
-            { "id": 402, "inputType": "account", "name": "Water" },
-            { "id": 403, "inputType": "default", "name": "Gas" }
+            {
+                "id": 401, "inputType": "account", "name": "Electricity",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 402, "inputType": "account", "name": "Water",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 403, "inputType": "default", "name": "Gas",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            }
         ]
     },
     {
         "id": 5,
         "name": "Internet",
         "services": [
-            { "id": 501, "inputType": "account", "name": "Broadband" },
-            { "id": 502, "inputType": "account", "name": "Fiber Optic" }
+            {
+                "id": 501, "inputType": "account", "name": "Broadband",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 502, "inputType": "account", "name": "Fiber Optic",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            }
         ]
     },
     {
         "id": 6,
         "name": "Gaming",
         "services": [
-            { "id": 601, "inputType": "default", "name": "Steam Wallet" },
-            { "id": 602, "inputType": "default", "name": "PSN Code" },
-            { "id": 603, "inputType": "default", "name": "Xbox Live" }
+            {
+                "id": 601, "inputType": "default", "name": "Steam Wallet",
+                "fields": [
+                    { "key": "login", "label": "Steam Login", "inputType": "string", "regex": "^.{3,64}$", "required": true }
+                ]
+            },
+            {
+                "id": 602, "inputType": "default", "name": "PSN Code",
+                "fields": []
+            },
+            {
+                "id": 603, "inputType": "default", "name": "Xbox Live",
+                "fields": []
+            }
         ]
     },
     {
         "id": 7,
         "name": "TV",
         "services": [
-            { "id": 701, "inputType": "account", "name": "Cable Subscription" },
-            { "id": 702, "inputType": "account", "name": "Netflix Pass" }
+            {
+                "id": 701, "inputType": "account", "name": "Cable Subscription",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 702, "inputType": "account", "name": "Netflix Pass",
+                "fields": [
+                    { "key": "account", "label": "Account Number", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            }
         ]
     },
     {
         "id": 8,
         "name": "Taxes",
         "services": [
-            { "id": 801, "inputType": "account", "name": "Property Tax" },
-            { "id": 802, "inputType": "account", "name": "Vehicle Tax" }
+            {
+                "id": 801, "inputType": "account", "name": "Property Tax",
+                "fields": [
+                    { "key": "account", "label": "Tax ID", "inputType": "account", "regex": "^\\d{6,20}$", "required": true }
+                ]
+            },
+            {
+                "id": 802, "inputType": "account", "name": "Vehicle Tax",
+                "fields": [
+                    { "key": "plate", "label": "License Plate", "inputType": "string", "regex": "^.{3,15}$", "required": true }
+                ]
+            }
         ]
     },
     {
         "id": 9,
         "name": "Charity",
         "services": [
-            { "id": 901, "inputType": "default", "name": "Red Cross" },
-            { "id": 902, "inputType": "default", "name": "UNICEF" },
-            { "id": 903, "inputType": "default", "name": "Local Shelter" }
+            {
+                "id": 901, "inputType": "default", "name": "Red Cross",
+                "fields": []
+            },
+            {
+                "id": 902, "inputType": "default", "name": "UNICEF",
+                "fields": []
+            },
+            {
+                "id": 903, "inputType": "default", "name": "Local Shelter",
+                "fields": []
+            }
         ]
     }
 ]

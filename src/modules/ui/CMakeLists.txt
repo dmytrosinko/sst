@@ -9,6 +9,7 @@ set_source_files_properties(qml/PanelBackground.qml PROPERTIES QT_RESOURCE_ALIAS
 set_source_files_properties(qml/ServiceTileView.qml PROPERTIES QT_RESOURCE_ALIAS ServiceTileView.qml)
 set_source_files_properties(qml/StyleConfigurator.qml PROPERTIES QT_RESOURCE_ALIAS StyleConfigurator.qml)
 set_source_files_properties(qml/AttractModeOverlay.qml PROPERTIES QT_RESOURCE_ALIAS AttractModeOverlay.qml)
+set_source_files_properties(qml/ValidatorEmulatorWindow.qml PROPERTIES QT_RESOURCE_ALIAS ValidatorEmulatorWindow.qml)
 qt_add_qml_module(${PROJECT_NAME}
     URI modules.${PROJECT_NAME}
     VERSION 1.0
@@ -23,4 +24,5 @@ qt_add_qml_module(${PROJECT_NAME}
         qml/ServiceTileView.qml
         qml/StyleConfigurator.qml
         qml/AttractModeOverlay.qml
+        qml/ValidatorEmulatorWindow.qml
 )

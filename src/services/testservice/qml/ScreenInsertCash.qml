@@ -3,6 +3,8 @@ import QtQuick.Layouts
 import app
 import modules.controls
 import modules.style
+import modules.hardware
+import modules.finance
 
 Item {
     id: root
@@ -12,6 +14,21 @@ Item {
     signal quitRequested()
     signal nextRequested()
 
+    // ── Activate validator when screen opens, deactivate on leave ──
+    Component.onCompleted: {
+        ValidatorController.activate()
+    }
+    Component.onDestruction: {
+        ValidatorController.deactivate()
+    }
+
+    // ── Pipe cash insertions to TransactionController ─────────────
+    Connections {
+        target: ValidatorController
+        function onTotalAmountChanged() {
+            TransactionController.setAmount(ValidatorController.totalAmount)
+        }
+    }
 
     RowLayout {
         anchors.fill: parent
@@ -47,7 +64,7 @@ Item {
                 // ── Title
                 Text {
                     Layout.fillWidth: true
-                    text: qsTr("Confirm details")
+                    text: qsTr("Insert cash")
                     color: Style.currentStyle.textPrimary
                     font.pixelSize: 28
                     font.weight: Font.Bold
@@ -94,7 +111,7 @@ Item {
                             color: Qt.rgba(1, 1, 1, 0.06)
                         }
 
-                        // Row: Amount
+                        // Row: Inserted Amount — live from TransactionController
                         RowLayout {
                             Layout.fillWidth: true
                             Text {
@@ -104,7 +121,7 @@ Item {
                             }
                             Item { Layout.fillWidth: true }
                             Text {
-                                text: "100.00 KGS"
+                                text: TransactionController.formattedAmount
                                 color: Style.currentStyle.statusSuccess
                                 font.pixelSize: 16
                                 font.weight: Font.Bold
@@ -118,7 +135,7 @@ Item {
                             color: Qt.rgba(1, 1, 1, 0.06)
                         }
 
-                        // Row: Commission
+                        // Row: Commission — live from TransactionController
                         RowLayout {
                             Layout.fillWidth: true
                             Text {
@@ -127,10 +144,57 @@ Item {
                                 font.pixelSize: 14
                             }
                             Item { Layout.fillWidth: true }
+
+                            Row {
+                                spacing: 6
+
+                                // Loading indicator while commission is being fetched
+                                Text {
+                                    visible: TransactionController.isCommissionLoading
+                                    text: "⏳"
+                                    font.pixelSize: 12
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+
+                                Text {
+                                    text: TransactionController.formattedCommission
+                                    color: Style.currentStyle.textPrimary
+                                    font.pixelSize: 14
+                                    opacity: TransactionController.isCommissionLoading ? 0.5 : 1.0
+                                    Behavior on opacity { NumberAnimation { duration: 200 } }
+                                }
+                            }
+                        }
+
+                        // Separator
+                        Rectangle {
+                            Layout.fillWidth: true
+                            height: 1
+                            color: Qt.rgba(1, 1, 1, 0.06)
+                        }
+
+                        // Row: Validator status
+                        RowLayout {
+                            Layout.fillWidth: true
                             Text {
-                                text: "0.00 KGS"
-                                color: Style.currentStyle.textPrimary
+                                text: qsTr("Status")
+                                color: Style.currentStyle.textSecondary
                                 font.pixelSize: 14
+                            }
+                            Item { Layout.fillWidth: true }
+                            Text {
+                                text: ValidatorController.stateName
+                                color: {
+                                    var s = ValidatorController.stateName
+                                    if (s === "Idling")
+                                        return Style.currentStyle.statusSuccess
+                                    if (s === "Jammed" || s === "Stacker Full"
+                                        || s === "Cashbox Removed" || s === "Failure")
+                                        return Style.currentStyle.statusWarning
+                                    return Style.currentStyle.textSecondary
+                                }
+                                font.pixelSize: 14
+                                font.weight: Font.DemiBold
                             }
                         }
                     }
@@ -153,6 +217,8 @@ Item {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 64
                     text: qsTr("NEXT")
+                    enabled: TransactionController.amount > 0
+                             && !TransactionController.isCommissionLoading
                     onClicked: root.nextRequested()
                 }
             }
@@ -163,7 +229,7 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.minimumWidth: 350
-            
+
             CashValidator {
                 id: cashValidator
                 anchors.top: parent.top
@@ -173,7 +239,7 @@ Item {
                 width: 600
                 height: 900
                 scale: 0.5
-                
+
                 Component.onCompleted: {
                     // Automatically start the insertion animation after a short delay
                     insertionTimer.start()

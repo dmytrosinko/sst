@@ -1,5 +1,6 @@
 #include "ServiceTreeModel.h"
 #include <QCoreApplication>
+#include <QPointer>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -72,7 +73,7 @@ QVariant ServiceTreeModel::data(const QModelIndex &index, int role) const
     switch (role) {
     case NameRole:
     case Qt::DisplayRole:
-        return QCoreApplication::translate("ServiceTreeModel", item->name().toUtf8().constData());
+        return QCoreApplication::translate("ServiceTreeModel", item->nameUtf8().constData());
     case IdRole:
         return item->id();
     case NodeTypeRole:
@@ -82,11 +83,15 @@ QVariant ServiceTreeModel::data(const QModelIndex &index, int role) const
     case InputTypeRole:
         if (item->nodeType() == ServiceTreeItem::NodeType::Service)
             return static_cast<int>(item->inputType());
-        return QVariant();
+        return {};
     case SizeRole:
         if (item->nodeType() == ServiceTreeItem::NodeType::Service)
             return item->size();
-        return QVariant();
+        return {};
+    case FieldsRole:
+        if (item->nodeType() == ServiceTreeItem::NodeType::Service)
+            return QVariant::fromValue(item->fields());
+        return {};
     default:
         break;
     }
@@ -101,7 +106,8 @@ QHash<int, QByteArray> ServiceTreeModel::roleNames() const
         {IdRole, "itemId"},
         {NodeTypeRole, "nodeType"},
         {InputTypeRole, "inputType"},
-        {SizeRole, "size"}
+        {SizeRole, "size"},
+        {FieldsRole, "fields"}
     };
 }
 
@@ -114,11 +120,13 @@ void ServiceTreeModel::addCategory(int categoryId, const QString &name)
     beginInsertRows(QModelIndex(), row, row);
     auto *category = new ServiceTreeItem(categoryId, name, m_rootItem);
     m_rootItem->appendChild(category);
+    m_categoryMap.insert(categoryId, category);
     endInsertRows();
 }
 
 void ServiceTreeModel::addService(int categoryId, int serviceId,
-                                  const QString &inputType, const QString &name, const QString &size)
+                                  const QString &inputType, const QString &name,
+                                  const QString &size, const QJsonArray &fields)
 {
     ServiceTreeItem *category = findCategory(categoryId);
     if (!category)
@@ -130,7 +138,7 @@ void ServiceTreeModel::addService(int categoryId, int serviceId,
     beginInsertRows(parentIndex, row, row);
     auto *service = new ServiceTreeItem(serviceId,
                                         inputTypeFromString(inputType),
-                                        name, size, category);
+                                        name, size, fields, category);
     category->appendChild(service);
     endInsertRows();
 }
@@ -140,6 +148,7 @@ void ServiceTreeModel::clear()
     beginResetModel();
     delete m_rootItem;
     m_rootItem = new ServiceTreeItem(0, QStringLiteral("Root"));
+    m_categoryMap.clear();
     endResetModel();
 }
 
@@ -184,7 +193,8 @@ bool ServiceTreeModel::loadFromJsonResource(const QString &resourcePath)
                        svc[QLatin1String("id")].toInt(),
                        svc[QLatin1String("inputType")].toString(),
                        svc[QLatin1String("name")].toString(),
-                       svc.contains(QLatin1String("size")) ? svc[QLatin1String("size")].toString() : QStringLiteral("1x1"));
+                       svc.contains(QLatin1String("size")) ? svc[QLatin1String("size")].toString() : QStringLiteral("1x1"),
+                       svc[QLatin1String("fields")].toArray());
         }
     }
 
@@ -195,11 +205,17 @@ bool ServiceTreeModel::loadFromJsonResource(const QString &resourcePath)
 void ServiceTreeModel::loadFromJsonResourceAsync(const QString &resourcePath)
 {
     // ── Phase 1: read + parse JSON on a background thread ────────────────────
-    QtConcurrent::run([this, resourcePath]() {
+    QPointer<ServiceTreeModel> self = this;
+    QtConcurrent::run([self, resourcePath]() {
+        if (!self) return;
+
         QFile file(resourcePath);
         if (!file.open(QIODevice::ReadOnly)) {
             qWarning() << "ServiceTreeModel: cannot open" << resourcePath;
-            QMetaObject::invokeMethod(this, [this]() { emit loadingFinished(false); });
+            if (self)
+                QMetaObject::invokeMethod(self.data(), [self]() {
+                    if (self) emit self->loadingFinished(false);
+                });
             return;
         }
 
@@ -207,7 +223,10 @@ void ServiceTreeModel::loadFromJsonResourceAsync(const QString &resourcePath)
         const QJsonDocument doc = QJsonDocument::fromJson(file.readAll(), &err);
         if (err.error != QJsonParseError::NoError) {
             qWarning() << "ServiceTreeModel: JSON parse error:" << err.errorString();
-            QMetaObject::invokeMethod(this, [this]() { emit loadingFinished(false); });
+            if (self)
+                QMetaObject::invokeMethod(self.data(), [self]() {
+                    if (self) emit self->loadingFinished(false);
+                });
             return;
         }
 
@@ -215,26 +234,29 @@ void ServiceTreeModel::loadFromJsonResourceAsync(const QString &resourcePath)
         const QJsonArray categories = doc.array();
 
         // ── Phase 2: populate model on the main (UI) thread ──────────────────
-        QMetaObject::invokeMethod(this, [this, categories]() {
-            clear();
+        if (!self) return;
+        QMetaObject::invokeMethod(self.data(), [self, categories]() {
+            if (!self) return;
+            self->clear();
             for (const QJsonValue &catVal : categories) {
                 const QJsonObject cat = catVal.toObject();
                 const int catId        = cat[QLatin1String("id")].toInt();
                 const QString catName  = cat[QLatin1String("name")].toString();
-                addCategory(catId, catName);
+                self->addCategory(catId, catName);
 
                 const QJsonArray services = cat[QLatin1String("services")].toArray();
                 for (const QJsonValue &svcVal : services) {
                     const QJsonObject svc = svcVal.toObject();
-                    addService(catId,
+                    self->addService(catId,
                                svc[QLatin1String("id")].toInt(),
                                svc[QLatin1String("inputType")].toString(),
                                svc[QLatin1String("name")].toString(),
-                               svc.contains(QLatin1String("size")) ? svc[QLatin1String("size")].toString() : QStringLiteral("1x1"));
+                               svc.contains(QLatin1String("size")) ? svc[QLatin1String("size")].toString() : QStringLiteral("1x1"),
+                               svc[QLatin1String("fields")].toArray());
                 }
             }
             qDebug() << "ServiceTreeModel: async loaded" << categories.size() << "categories";
-            emit loadingFinished(true);
+            emit self->loadingFinished(true);
         });
     });
 }
@@ -244,7 +266,7 @@ QString ServiceTreeModel::translatedCategoryName(int row) const
     if (row < 0 || row >= m_rootItem->childCount())
         return {};
     ServiceTreeItem *item = m_rootItem->child(row);
-    return QCoreApplication::translate("ServiceTreeModel", item->name().toUtf8().constData());
+    return QCoreApplication::translate("ServiceTreeModel", item->nameUtf8().constData());
 }
 
 void ServiceTreeModel::emitAllNamesChanged(const QModelIndex &parent)
@@ -273,14 +295,7 @@ ServiceTreeItem *ServiceTreeModel::itemFromIndex(const QModelIndex &index) const
 
 ServiceTreeItem *ServiceTreeModel::findCategory(int categoryId) const
 {
-    for (int i = 0; i < m_rootItem->childCount(); ++i) {
-        ServiceTreeItem *item = m_rootItem->child(i);
-        if (item->nodeType() == ServiceTreeItem::NodeType::Category
-            && item->id() == categoryId) {
-            return item;
-        }
-    }
-    return nullptr;
+    return m_categoryMap.value(categoryId, nullptr);
 }
 
 InputType ServiceTreeModel::inputTypeFromString(const QString &str) const
