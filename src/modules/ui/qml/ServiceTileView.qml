@@ -86,15 +86,17 @@ Item {
         var listItems = []
         for (var k = 0; k < chosen.length; k++) {
             var svc   = chosen[k]
+
             var tileW = (svc.colSpan || 1) * topSection._stride - 20
             var tileH = (svc.rowSpan || 1) * topSection._stride - 20
-
-            // Compute grid canvas offset (gridCanvas is centred inside each page delegate)
+             console.log("--p-",k, svc.colSpan, svc.rowSpan, JSON.stringify(svc), tileW, tileH)
+            // Compute grid canvas offsets within each page delegate.
+            // gridCanvas is anchors.horizontalCenter (X centered) but anchors.top (Y = 0).
             var pageDelegate = pageView.itemAtIndex(pageIdx)
             var canvasX = 0; var canvasY = 0
             if (pageDelegate) {
-                canvasX = (pageView.width  - (topSection._gridCols * topSection._stride - 20)) / 2
-                canvasY = (pageView.height - (topSection._gridRows * topSection._stride - 20)) / 2
+                canvasX = (pageView.width - (topSection._gridCols * topSection._stride - 20)) / 2
+                canvasY = 0   // gridCanvas anchors.top: parent.top → no vertical offset
             }
 
             // Tile top-left in topSection's coordinate space
@@ -465,7 +467,8 @@ Item {
             repeat: false
             onTriggered: {
                 if (categoriesList.singleSetWidth > 0) {
-                    // Snap to beginning of middle set then animate infinitely
+                    // Show all 3 sets, snap to middle set, then animate infinitely
+                    categoriesList.isAutoScrolling = true
                     categoriesList.contentX = categoriesList.singleSetWidth
                     autoScroll.from = categoriesList.singleSetWidth
                     autoScroll.to = categoriesList.singleSetWidth * 2
@@ -500,7 +503,12 @@ Item {
             z: -1
             onPressed: function(mouse) {
                 autoScroll.stop()
-                idleTimer.restart() // restart 1-min countdown after interaction
+                idleTimer.restart()
+                // Snap into first-set range, then switch to finite mode
+                if (categoriesList.isAutoScrolling && categoriesList.singleSetWidth > 0) {
+                    categoriesList.contentX = categoriesList.contentX % categoriesList.singleSetWidth
+                    categoriesList.isAutoScrolling = false
+                }
                 mouse.accepted = false
             }
         }
@@ -510,25 +518,30 @@ Item {
             anchors.fill: parent
             anchors.topMargin: 20
             clip: true
-            
+            boundsBehavior: Flickable.StopAtBounds
             contentWidth: rowLayout.width
             contentHeight: height
 
             property real singleSetWidth: 0
             property bool _hasCentered: false
+            property bool isAutoScrolling: false
 
             onMovementStarted: {
                 autoScroll.stop()
-                idleTimer.restart() // restart 1-min countdown after interaction
+                idleTimer.restart()
+                // Switch to finite mode: snap into first-set range
+                if (isAutoScrolling && singleSetWidth > 0) {
+                    contentX = contentX % singleSetWidth
+                    isAutoScrolling = false
+                }
             }
             onFlickStarted: {
                 autoScroll.stop()
-                idleTimer.restart() // restart 1-min countdown after interaction
+                idleTimer.restart()
             }
             onMovementEnded: {
-                // Invisible wrap-around when physics comes to rest 
-                // Bounds the user perpetually in the middle Repeater instance
-                if (singleSetWidth > 0) {
+                // Wrap-around only applies in infinite auto-scroll mode
+                if (isAutoScrolling && singleSetWidth > 0) {
                     var cx = contentX
                     while (cx < singleSetWidth) cx += singleSetWidth
                     while (cx >= 2 * singleSetWidth) cx -= singleSetWidth
@@ -553,10 +566,9 @@ Item {
 
                         if (!categoriesList._hasCentered && categoriesList.singleSetWidth > 0) {
                             categoriesList._hasCentered = true
-                            // Start at the beginning of the middle set
+                            // Show all 3 sets, start at middle set, kick off infinite auto-scroll
+                            categoriesList.isAutoScrolling = true
                             categoriesList.contentX = categoriesList.singleSetWidth
-
-                            // Immediately kick off infinite auto-scroll from element 0
                             autoScroll.from = categoriesList.singleSetWidth
                             autoScroll.to = categoriesList.singleSetWidth * 2
                             autoScroll.restart()
@@ -565,8 +577,8 @@ Item {
                 }
 
                 Repeater { id: rep1; model: ServiceTreeModel; delegate: categoryDelegate }
-                Repeater { id: rep2; model: ServiceTreeModel; delegate: categoryDelegate }
-                Repeater { id: rep3; model: ServiceTreeModel; delegate: categoryDelegate }
+                Repeater { id: rep2; model: categoriesList.isAutoScrolling ? ServiceTreeModel : null; delegate: categoryDelegate }
+                Repeater { id: rep3; model: categoriesList.isAutoScrolling ? ServiceTreeModel : null; delegate: categoryDelegate }
             }
         }
     }

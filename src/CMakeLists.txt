@@ -1,6 +1,6 @@
 project(sst-app VERSION 0.1 LANGUAGES CXX)
 
-find_package(Qt6 REQUIRED COMPONENTS Gui Quick LinguistTools)
+find_package(Qt6 REQUIRED COMPONENTS Gui Quick QuickDialogs2 LinguistTools)
 
 add_subdirectory(modules/hardware)
 add_subdirectory(modules/controls)
@@ -18,6 +18,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES
         TranslationManager.h
         TranslationManager.cpp
+        FileWriter.h
+        FileWriter.cpp
     QML_FILES
         Main.qml
     RESOURCES
@@ -65,7 +67,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 
 target_link_libraries(${PROJECT_NAME}
-    PRIVATE Qt6::Quick Qt6::Gui hardwareplugin controlsplugin styleplugin uiplugin servicesplugin testserviceplugin
+    PRIVATE Qt6::Quick Qt6::Gui Qt6::QuickDialogs2 hardwareplugin controlsplugin styleplugin uiplugin servicesplugin testserviceplugin
 )
 
 include(GNUInstallDirs)

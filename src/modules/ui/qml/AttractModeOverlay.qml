@@ -6,18 +6,20 @@ import modules.style
 // ── AttractModeOverlay ───────────────────────────────────────────────────────
 //
 //  Phase machine:
-//    IDLE → SETTLING  (tiles appear at their real grid position @ scale 0.6,
+//    IDLE → SETTLING  (tiles appear at their real grid position @ scale 0.60,
 //                      fade-in over ~300ms, hold for settleDelay ms)
 //         → ENTERING  (tiles fly from source pos to triangle @ scale 1.0
 //                      = 250×250 px, 650ms OutCubic)
-//         → PULSING   (border glow pulse + breathing scale 1.0↔1.05, 30 s)
-//         → RETURNING (tiles fly back to source pos @ scale 0.6, 650ms)
+//         → PULSING   (border glow pulse + breathing scale 1.0↔1.10, 30 s)
+//         → RETURNING (tiles fly back to source pos @ scale 0.60, 650ms)
 //         → IDLE → cycleFinished() → host repicks → startAttract() again
 //
 //  Tile visual size at triangle = 250 × 250 px  (scale 1.0).
+//  Source grid tile = 150 × 150 px  → initial scale = 150/250 = 0.60
 //
 //  Non-overlap guarantee:
-//    Circumradius R = _tileBase * 0.90 → vertex distance = R√3 ≈ 390px > 250px ✓
+//    Horizontal gap between left/right-bottom tile centres ≈ _squareSize − _tileBase
+//    For a typical 1280 px wide viewport this is ~443 px > 250 px ✓
 //
 //  Glow = blurred outer ring + crisp inner border, both driven by _glowOpacity.
 // ---------------------------------------------------------------------------
@@ -74,7 +76,7 @@ Item {
 
     property real headerHeight: 80
     property real footerHeight: 40
-    readonly property real _tileBase:   250.0   // tile rendered size (scale 1.0)
+    readonly property real _tileBase:   250.0   // triangle tile size; source tiles scale down to match grid (150/250 = 0.6)
 
     // Virtual square: 60% of overlay width (clamped to available height),
     // with tile padding so tiles never overflow the boundary.
@@ -83,27 +85,27 @@ Item {
     readonly property real _squareLeft: (width - _squareSize) / 2
     readonly property real _squareTop:  headerHeight + (_availH - _squareSize) / 2
 
-    // Top-left x/y for tile i  (tile is _tileBase × _tileBase)
+    // Centre x/y for triangle slot i  (tile is _tileBase × _tileBase at full size)
     //
     //            [1] top-center
     //
     //  [0] left-bottom          [2] right-bottom
     //
-    function _vx(i) {
+    function _vcx(i) {
         switch (i) {
-            case 0: return _squareLeft                                          // left-bottom
-            case 1: return _squareLeft + (_squareSize - _tileBase) / 2         // top-center
-            case 2: return _squareLeft + _squareSize - _tileBase               // right-bottom
+            case 0: return _squareLeft + _tileBase / 2                // left-bottom
+            case 1: return _squareLeft + _squareSize / 2              // top-center
+            case 2: return _squareLeft + _squareSize - _tileBase / 2  // right-bottom
         }
         return 0
     }
-    function _vy(i) {
-        var topY    = _squareTop
-        var bottomY = _squareTop + _squareSize - _tileBase
+    function _vcy(i) {
+        var topCY    = _squareTop + _tileBase / 2
+        var bottomCY = _squareTop + _squareSize - _tileBase / 2
         switch (i) {
-            case 0: return bottomY   // left-bottom
-            case 1: return topY      // top-center
-            case 2: return bottomY   // right-bottom
+            case 0: return bottomCY   // left-bottom
+            case 1: return topCY      // top-center
+            case 2: return bottomCY   // right-bottom
         }
         return 0
     }
@@ -149,21 +151,27 @@ Item {
 
             readonly property var svc: overlay.items[att.index] ?? {}
 
-            // Logical size = attract tile size (250 × 250 at scale 1.0)
-            width:  overlay._tileBase
-            height: overlay._tileBase
+            // ── Animated center position ──────────────────────────────────
+            property real _cx: 0
+            property real _cy: 0
 
-            // Initial defaults; overridden by startAttract before becoming visible
-            x: 0
-            y: 0
-            scale: (att.svc.tileW ?? overlay._tileBase) / overlay._tileBase
+            // ── Animated tile size (tileW/H at source ↔ _tileBase at triangle) ──
+            property real _tw: att.svc.tileW ?? overlay._tileBase
+            property real _th: att.svc.tileH ?? overlay._tileBase
+
+            // Derived geometry — position and size follow center + size properties
+            x:      _cx - _tw / 2
+            y:      _cy - _th / 2
+            width:  _tw
+            height: _th
 
             // Smooth animated transitions — only when _behaviorsEnabled is true
-            Behavior on x     { enabled: overlay._behaviorsEnabled; NumberAnimation { duration: 650; easing.type: Easing.OutCubic } }
-            Behavior on y     { enabled: overlay._behaviorsEnabled; NumberAnimation { duration: 650; easing.type: Easing.OutCubic } }
-            Behavior on scale { enabled: overlay._behaviorsEnabled; NumberAnimation { duration: 650; easing.type: Easing.OutCubic } }
+            Behavior on _cx { enabled: overlay._behaviorsEnabled; NumberAnimation { duration: 650; easing.type: Easing.OutCubic } }
+            Behavior on _cy { enabled: overlay._behaviorsEnabled; NumberAnimation { duration: 650; easing.type: Easing.OutCubic } }
+            Behavior on _tw { enabled: overlay._behaviorsEnabled; NumberAnimation { duration: 650; easing.type: Easing.OutCubic } }
+            Behavior on _th { enabled: overlay._behaviorsEnabled; NumberAnimation { duration: 650; easing.type: Easing.OutCubic } }
 
-            // Breathing: push _pulseScale into att.scale while PULSING
+            // Breathing: scale ±10% on top of the explicit size (multiplicative)
             Connections {
                 target: overlay
                 function on_PulseScaleChanged() {
@@ -392,9 +400,11 @@ Item {
                 var t = tileRepeater.itemAt(i)
                 if (!t) continue
                 var s = overlay.items[i]
-                t.x     = s.srcX - _tileBase / 2
-                t.y     = s.srcY - _tileBase / 2
-                t.scale = s.tileW / _tileBase   // real source size (e.g. 200/250 = 0.8)
+                t._cx = s.srcX       // centre
+                t._cy = s.srcY
+                t._tw = s.tileW      // actual grid tile size
+                t._th = s.tileH
+                t.scale = 1.0        // reset any breathing overshoot
             }
 
             // 2. Fade tiles in at their source grid position
@@ -445,9 +455,11 @@ Item {
         for (var i = 0; i < tileRepeater.count; i++) {
             var t = tileRepeater.itemAt(i)
             if (!t) continue
-            t.x     = overlay._vx(i)
-            t.y     = overlay._vy(i)
-            t.scale = 1.0    // 250 × 250 px
+            // Animate centre to triangle vertex AND grow to _tileBase × _tileBase
+            t._cx = overlay._vcx(i)
+            t._cy = overlay._vcy(i)
+            t._tw = overlay._tileBase
+            t._th = overlay._tileBase
         }
         flyInTimer.restart()
     }
@@ -476,15 +488,16 @@ Item {
             if (t) t.scale = 1.0
         }
 
-        // 2. Rotate positions clockwise
+        // 2. Rotate positions clockwise (size stays at _tileBase × _tileBase)
         _rotationOffset = (_rotationOffset + 1) % 3
         _behaviorsEnabled = true
         for (var j = 0; j < tileRepeater.count; j++) {
             var tile = tileRepeater.itemAt(j)
             if (!tile) continue
             var slot = (j + _rotationOffset) % 3
-            tile.x = overlay._vx(slot)
-            tile.y = overlay._vy(slot)
+            tile._cx = overlay._vcx(slot)
+            tile._cy = overlay._vcy(slot)
+            // size stays at _tileBase — no change needed
         }
 
         // 3. After settle, disable behaviors and restart breathing
@@ -493,26 +506,34 @@ Item {
 
     function _beginReturn() {
         _phase            = "RETURNING"
-        _behaviorsEnabled = true    // re-enable for fly-back animation
         rotateTimer.stop()
         rotateSettleTimer.stop()
-        //glowAnim.stop()
         breatheAnim.stop()
         _glowOpacity      = 0.0
         _pulseScale       = 1.0
         _rotationOffset   = 0
 
-        // Fly tiles back to source positions, restoring original size
-        // (keep tiles fully visible so user sees the flight)
-        for (var i = 0; i < tileRepeater.count; i++) {
-            var t = tileRepeater.itemAt(i)
-            if (!t) continue
-            var s = overlay.items[i]
-            t.x     = s.srcX - _tileBase / 2
-            t.y     = s.srcY - _tileBase / 2
-            t.scale = s.tileW / _tileBase   // back to real source size
-        }
-        // After tiles land, fade them out then signal cycle finished
+        // Enable behaviors FIRST, then yield to the event loop via Qt.callLater
+        // so the Behavior { enabled: overlay._behaviorsEnabled } bindings have
+        // time to re-evaluate before we assign the target values.
+        // Without this, scale/x/y might snap instead of animate.
+        _behaviorsEnabled = true
+        Qt.callLater(function() {
+            for (var i = 0; i < tileRepeater.count; i++) {
+                var t = tileRepeater.itemAt(i)
+                if (!t) continue
+                var s = overlay.items[i]
+                // Animate centre back to source AND shrink to original grid tile size
+                t._cx = s.srcX
+                t._cy = s.srcY
+                t._tw = s.tileW
+                t._th = s.tileH
+                t.scale = 1.0   // reset breathing before return
+            }
+        })
+
+        // Timer gives 700 ms total; callLater fires in <1 frame (~16 ms),
+        // so the 650 ms animation completes before the fade begins.
         returnFadeTimer.restart()
     }
 }

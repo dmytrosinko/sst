@@ -21,4 +21,5 @@ qt_add_qml_module(${PROJECT_NAME}
         qml/Style.qml
         qml/DarkStyle.qml
         qml/SimbankPallete.qml
+        QML_FILES qml/DarkStyle_copy.qml
 )

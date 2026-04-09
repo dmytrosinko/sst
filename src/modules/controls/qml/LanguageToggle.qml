@@ -61,8 +61,8 @@ Item {
                     anchors.centerIn: parent
                     text: modelData.label
                     color: toggleBtn.isActive
-                           ? Style.currentStyle.background
-                           : Style.currentStyle.textPrimary
+                           ? Style.currentStyle.languageToggleTextColor
+                           : Style.currentStyle.languageToggleUnselectedTextColor
                     font.pixelSize: root.height * 0.36
                     font.weight: toggleBtn.isActive ? Font.DemiBold : Font.Normal
                     font.letterSpacing: 0.5

@@ -182,6 +182,6 @@ Item {
     Loader {
         id: gradientWindowLoader
         active: false
-        source: "GradientSelectionWindow.qml"
+        source: "StyleConfigurator.qml"
     }
 }
