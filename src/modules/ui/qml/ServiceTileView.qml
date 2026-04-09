@@ -86,8 +86,8 @@ Item {
         var listItems = []
         for (var k = 0; k < chosen.length; k++) {
             var svc   = chosen[k]
-            var tileW = svc.size === "2x2" ? 420 : 200
-            var tileH = svc.size === "2x2" ? 420 : 200
+            var tileW = (svc.colSpan || 1) * topSection._stride - 20
+            var tileH = (svc.rowSpan || 1) * topSection._stride - 20
 
             // Compute grid canvas offset (gridCanvas is centred inside each page delegate)
             var pageDelegate = pageView.itemAtIndex(pageIdx)
@@ -234,9 +234,9 @@ Item {
 
         // ── Page building ────────────────────────────────────────────
         property var _pages: []
-        property int _gridCols: Math.max(1, Math.floor((width + 20) / 220))
-        readonly property int _gridRows: 2
-        readonly property int _stride: 220  // 200px tile + 20px gap
+        property int _gridCols: Math.max(1, Math.floor((width + 20) / 170))
+        readonly property int _gridRows: 3
+        readonly property int _stride: 170  // 150px tile + 20px gap
 
         function _buildPages() {
             var cols = topSection._gridCols
@@ -278,10 +278,11 @@ Item {
 
             for (var i = 0; i < svcDelegateModel.count; i++) {
                 var entry = svcDelegateModel.items.get(i)
-                var sz  = entry.model.size || "1x1"
-                var w   = sz === "2x2" ? 2 : 1
-                var h   = sz === "2x2" ? 2 : 1
-                var pos = findPos(grid, w, h)
+                var sz     = entry.model.size || "1x1"
+                var parts  = sz.split("x")
+                var w      = Math.max(1, parseInt(parts[0]) || 1)
+                var h      = Math.max(1, parseInt(parts[1]) || 1)
+                var pos    = findPos(grid, w, h)
 
                 if (!pos) {
                     // Page full — flush and start fresh
@@ -297,6 +298,8 @@ Item {
                     name:      entry.model.name,
                     inputType: entry.model.inputType,
                     size:      sz,
+                    colSpan:   w,
+                    rowSpan:   h,
                     col:       pos.col,
                     row:       pos.row
                 })
@@ -340,7 +343,7 @@ Item {
         ListView {
             id: pageView
             anchors.top: indicatorRow.bottom
-            anchors.topMargin: indicatorRow.visible ? 10 : 0
+            anchors.topMargin: indicatorRow.visible ? 10 : 10
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
@@ -368,18 +371,18 @@ Item {
                     id: gridCanvas
                     width:  pageDelegate.gridW
                     height: pageDelegate.gridH
-                    anchors.centerIn: parent
+                    anchors.top: parent.top
+                    anchors.horizontalCenter: parent.horizontalCenter
 
                     Repeater {
                         model: pageDelegate.pageItems.length
                         delegate: Item {
                             readonly property var svc: pageDelegate.pageItems[index]
-                            readonly property bool is2x2: svc && svc.size === "2x2"
 
                             x: svc ? svc.col * topSection._stride : 0
                             y: svc ? svc.row * topSection._stride : 0
-                            width:  is2x2 ? 420 : 200
-                            height: is2x2 ? 420 : 200
+                            width:  svc ? svc.colSpan * topSection._stride - 20 : 150
+                            height: svc ? svc.rowSpan * topSection._stride - 20 : 150
 
                             Tile {
                                 anchors.fill: parent
