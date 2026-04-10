@@ -8,7 +8,13 @@ This document describes the high-level architecture of the Self Service Terminal
 
 SST is a Qt 6.10 C++/QML application tailored for kiosk and terminal environments. The architecture is cleanly divided into:
 - **Core Entry Point (`app`)**: The main executable that bootstraps the primary engine, located directly under `src/`.
-- **Modules**: Reusable cross-cutting capabilities (like hardware communication), located in `src/modules/`.
+- **Modules**: Reusable cross-cutting capabilities, located in `src/modules/`:
+  - `modules.controls` — shared UI component library (buttons, inputs, keyboard, numpad)
+  - `modules.finance` — transaction lifecycle controller, session model, and backend singleton
+  - `modules.hardware` — hardware abstraction layer (validator driver, emulator, system telemetry)
+  - `modules.services` — JSON-backed service catalog tree model (`ServiceTreeModel`)
+  - `modules.style` — design token theming (palettes, colors, typography)
+  - `modules.ui` — application-level screens and UI chrome (home, header, footer, overlays)
 - **Services**: Dedicated stateful workflows designed for user-facing terminal operations, located in `src/services/`.
 
 ---
@@ -41,14 +47,19 @@ To visualize how these rules come together, consider the `testservice` implement
 
 ```text
 src/services/testservice/
-├── CMakeLists.txt         # Defines 'project(testservice)' and 'URI service.testservice' 
-├── ServiceModel.h         # C++ logic class (in 'namespace testservice')
-├── ServiceModel.cpp       # Registers as a QML_SINGLETON to control the workflow
+├── CMakeLists.txt             # Defines 'project(testservice)' and 'URI service.testservice'
+├── ServiceModel.h             # C++ logic class (in 'namespace testservice')
+├── ServiceModel.cpp           # Registers as a QML_SINGLETON to control the workflow
 └── qml/
-    ├── Service.qml        # The main wrapper using QQC2.SwipeView
-    ├── Screen1.qml        # e.g., Number input and 'Next' button
-    ├── Screen2.qml        # e.g., String input and 'Back' button
-    └── Screen3.qml        # e.g., 'Thank You' text and 'Quit' button
+    ├── Service.qml                # Main workflow wrapper using QQC2.SwipeView
+    ├── NumericInputScreen.qml     # Reusable numeric entry screen
+    ├── ScreenInputString.qml      # Free-text string entry step
+    ├── ScreenInputNumber.qml      # Numeric entry step
+    ├── ScreenInputPhone.qml       # Phone number entry step
+    ├── ScreenInputIban.qml        # IBAN entry step
+    ├── ScreenInputCardNumber.qml  # Card number entry step
+    ├── ScreenInsertCash.qml       # Cash insertion / validator step
+    └── Screen3.qml               # Confirmation / receipt step
 ```
 
 **Workflow Execution Example:**
@@ -87,10 +98,11 @@ All visual tokens (colors, font sizes) are centralized in the **`modules.style`*
 
 ```text
 src/modules/style/
-├── CMakeLists.txt          # Registers both singletons; URI = modules.style
+├── CMakeLists.txt          # Registers all three singletons; URI = modules.style
 └── qml/
     ├── Style.qml           # Root singleton — the single import consumers use
-    └── DarkStyle.qml       # Concrete theme — all Nord-palette design tokens
+    ├── DarkStyle.qml       # Concrete dark theme — Nord-palette design tokens
+    └── SimbankPallete.qml  # Extended brand palette — secondary colours, gradients, font family
 ```
 
 ### How It Works
@@ -103,9 +115,19 @@ src/modules/style/
    | **Borders** | `borderDefault`, `borderAccent`, `borderStrong` |
    | **Text** | `textPrimary`, `textSecondary`, `textOnAccent`, `textHeading` |
    | **Accent / Status** | `accentPrimary`, `accentSecondary`, `statusSuccess`, `statusWarning` |
+   | **Dynamic/Themed** | `backgroundGradient`, `tileColor`, `categoryTileColor`, `buttonColor`, `buttonDisabledColor`, `backButtonColor`, `languageToggleColor` |
+   | **Per-component Text** | `tileTextColor`, `buttonTextColor`, `backButtonTextColor`, `languageToggleTextColor`, etc. |
+   | **Keyboard** | `keyboardBackground`, `keyColor`, `keyHoverColor`, `keyPressedColor`, `keyTextColor`, `keyHighlightColor`, etc. |
+   | **Input Fields** | `inputTextColor`, `inputPlaceholderColor`, `inputBackgroundColor`, `inputBorderColor` |
    | **Typography** | `fontSizeSmall` (14), `fontSizeNormal` (16), `fontSizeLarge` (18), `fontSizeXLarge` (24) |
 
-2. **`Style.qml`** — a `pragma Singleton` `QtObject` that exposes a single `currentStyle` property pointing to a `DarkStyle` instance. All consumer code references `Style.currentStyle.*`, keeping one clean indirection layer for future theme switching.
+2. **`SimbankPallete.qml`** — a `pragma Singleton` `QtObject` providing the extended brand palette:
+   - Named flat colours (`logoWhite`, `accentPurpleBase`, `statusGreen`, and 40+ secondary palette colours)
+   - 17 named background gradients (`backgroundGradient1`…`backgroundGradient17`) for the animated background
+   - `fontFamily` — the application-wide typeface (EuclidCircularB)
+   - `allSecondaryColors` and `allBackgroundGradients` list properties consumed by `StyleConfigurator`
+
+3. **`Style.qml`** — a `pragma Singleton` `QtObject` that exposes a single `currentStyle` property pointing to a `DarkStyle` instance. All consumer code references `Style.currentStyle.*`, keeping one clean indirection layer for future theme switching.
 
 3. **Consumer usage** — any QML file that needs a color or font size imports the module and reads the token:
 
@@ -140,3 +162,16 @@ To ensure regressions do not bleed into the isolated components natively, the te
 - **1:1 File Segregation**: Every source file has a perfectly isolated `tst_[filename]` counterpart.
 - **GUI-Less Isolation**: C++ structural behaviors bind entirely to `QTEST_GUILESS_MAIN` natively explicitly avoiding system interaction rendering timeouts seamlessly across Linux or Windows headless builds natively!
 - **Componentized View Bounds**: QML evaluates simulated UI constraints by implicitly isolating bounds properties (`width/height`) directly against component wrappers mapped within `qt_add_executable()` natively avoiding Window execution constraints!
+
+---
+
+## 6. Keyboard Shortcuts
+
+All keyboard shortcuts are declared as QML `Shortcut` items and are active while the application window is focused.
+
+| Shortcut | Defined In | Description |
+|----------|------------|-------------|
+| `Ctrl+X` | `src/Main.qml` | Quit the application immediately (`Qt.quit()`) |
+| `Ctrl+G` | `src/modules/ui/qml/Home.qml` | Toggle the **Style Configurator** window (live theme editor) |
+| `Ctrl+A` | `src/modules/ui/qml/Home.qml` | Toggle **Attract Mode** — starts the idle kiosk animation; press again while active to stop it |
+| `Ctrl+E` | `src/modules/ui/qml/Home.qml` | Toggle the **Validator Emulator** debug window (hardware-emulation UI for bill-validator testing) |

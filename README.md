@@ -15,6 +15,7 @@ A **Self Service Terminal** application built with **Qt**, **C++**, and **CMake*
   - [Using Qt Creator (GUI)](#using-qt-creator-gui)
   - [Command‑Line (CMake)](#command-line-cmake)
 - [Running the Application](#running-the-application)
+- [Keyboard Shortcuts](#keyboard-shortcuts)
 - [Development Tips](#development-tips)
 - [License](#license)
 
@@ -45,27 +46,110 @@ A **Self Service Terminal** application built with **Qt**, **C++**, and **CMake*
 
 ```text
 sst/
-├── CMakeLists.txt          # Top‑level CMake configuration
-├── src/                    # Core source code and QML entry points
-│   ├── CMakeLists.txt      # Binds core executable and submodules
-│   ├── main.cpp            # C++ bootstrapping engine
-│   ├── Main.qml            # Primary layout wrapper
-│   ├── TranslationManager.*# Global C++ Translation singleton
-│   ├── modules/            # Independent plugins
-│   │   ├── controls/       # Reusable UI controls (Button, TextField, TextArea)
-│   │   ├── hardware/       # Hardware integration (CPU, RAM, FPS)
-│   │   └── style/          # Theming & design tokens
+├── CMakeLists.txt               # Top‑level CMake configuration
+├── build_linux.ps1 / .sh        # Linux build helper scripts
+├── src/                         # Core source code and QML entry points
+│   ├── CMakeLists.txt           # Binds core executable and submodules
+│   ├── main.cpp                 # C++ application entry point
+│   ├── Main.qml                 # Root window – full‑screen host, splash, global shortcuts
+│   ├── TranslationManager.*     # C++ singleton – runtime language switching
+│   ├── FileWriter.*             # C++ helper – QML‑accessible file‑write utility
+│   ├── assets/                  # Shared static assets embedded as Qt resources
+│   │   ├── fonts/               # EuclidCircularB (.ttf) – Regular / Medium / SemiBold / Bold
+│   │   ├── icons/               # Numeric digit & input‑type SVG icons
+│   │   ├── logo.svg             # Application logo
+│   │   ├── icon_category.svg    # Default category tile icon
+│   │   ├── icon_service.svg     # Default service tile icon
+│   │   └── services.json        # Service catalog – tree of categories & services
+│   ├── modules/                 # Reusable feature modules (URI: modules.<name>)
+│   │   ├── controls/            # UI control library
+│   │   │   ├── CMakeLists.txt
+│   │   │   ├── assets/          # Banknote & cash‑slot SVG assets
+│   │   │   └── qml/
+│   │   │       ├── Button.qml          # Primary action button
+│   │   │       ├── BackButton.qml      # Navigation back button
+│   │   │       ├── Tile.qml            # Service / category tile
+│   │   │       ├── StringInput.qml     # Free‑text input + keyboard
+│   │   │       ├── NumberInput.qml     # Numeric‑only input + numpad
+│   │   │       ├── PhoneInput.qml      # Phone number input with mask
+│   │   │       ├── IbanInput.qml       # IBAN input with validation
+│   │   │       ├── CardInput.qml       # Card number input with mask
+│   │   │       ├── CashValidator.qml   # Cash insertion widget (banknote display)
+│   │   │       ├── NumPad.qml          # On‑screen numeric pad
+│   │   │       ├── StringKeyboard.qml  # Full on‑screen QWERTY keyboard
+│   │   │       ├── LanguageToggle.qml  # Language selector toggle
+│   │   │       ├── TextField.qml       # Single‑line display text field
+│   │   │       └── TextArea.qml        # Multi‑line display text area
+│   │   ├── finance/             # Transaction engine (URI: modules.finance)
+│   │   │   ├── CMakeLists.txt
+│   │   │   ├── FinanceBackend.*        # QML‑exposed backend singleton
+│   │   │   ├── TransactionController.*# Core transaction lifecycle controller
+│   │   │   ├── TransactionSession.*    # Session data model
+│   │   │   └── TransactionStatus.h    # Transaction status enum
+│   │   ├── hardware/            # Hardware abstraction layer (URI: modules.hardware)
+│   │   │   ├── CMakeLists.txt
+│   │   │   ├── SystemInfo.*            # CPU / RAM / FPS telemetry
+│   │   │   ├── PortScanner.*           # Serial port discovery
+│   │   │   ├── ValidatorController.*   # High‑level validator orchestrator
+│   │   │   ├── ValidatorDriver.*       # Low‑level MEI ccTalk driver
+│   │   │   ├── ValidatorEmulator.*     # Software emulator for bill validator
+│   │   │   ├── ValidatorInterface.*    # Abstract validator interface
+│   │   │   ├── ValidatorTypes.h        # Shared validator enums & structs
+│   │   │   └── qml/
+│   │   │       └── HardwareInfo.qml    # QML telemetry overlay component
+│   │   ├── services/            # Service catalog model (URI: modules.services)
+│   │   │   ├── CMakeLists.txt
+│   │   │   ├── ServiceTreeModel.*      # QAbstractItemModel – JSON‑backed tree
+│   │   │   └── ServiceTreeItem.*       # Tree node data class
+│   │   ├── style/               # Design‑token theming (URI: modules.style)
+│   │   │   ├── CMakeLists.txt
+│   │   │   └── qml/
+│   │   │       ├── Style.qml           # Singleton – exposes currentStyle property
+│   │   │       ├── DarkStyle.qml       # Dark theme – Nord‑inspired palette
+│   │   │       └── SimbankPallete.qml  # Extended brand colour palette & gradients
+│   │   └── ui/                  # Application‑level UI screens (URI: modules.ui)
+│   │       ├── CMakeLists.txt
 │   │       └── qml/
-│   │           ├── Style.qml      # Singleton – exposes currentStyle
-│   │           └── DarkStyle.qml  # Singleton – Nord palette colors & fonts
-│   ├── services/           # Stateful user-facing workflows (e.g., testservice)
-│   └── translations/       # Auto-generated qt_add_translation dictionaries (.ts)
-├── tests/                  # 1:1 Explicit Unit and Integration Tests
-│   ├── cpp/                # C++ Logic execution evaluators using QtTest
-│   └── qml/                # QML UI bound execution evaluators using QtQuickTest
-├── doc/                    # Documentation and contribution standards
-│   ├── ARCHITECTURE.md     # Core module architectural strategies
-│   └── CONTRIBUTING.md     # Setup, coding, and localization guidelines
+│   │           ├── Home.qml                  # Root screen – tile navigation + service host
+│   │           ├── Header.qml                # Top chrome bar with logo & language toggle
+│   │           ├── Footer.qml                # Bottom status bar
+│   │           ├── MainBackground.qml        # Gradient animated background
+│   │           ├── PanelBackground.qml       # Frosted‑glass panel base
+│   │           ├── ServiceTileView.qml       # Grid tile navigator (categories → services)
+│   │           ├── AttractModeOverlay.qml    # Idle attract‑mode animation overlay
+│   │           ├── StyleConfigurator.qml     # Live theme editor window
+│   │           └── ValidatorEmulatorWindow.qml # Debug cash‑validator emulation UI
+│   ├── services/                # User‑facing service workflows (URI: service.<name>)
+│   │   └── testservice/         # Reference service implementation
+│   │       ├── CMakeLists.txt
+│   │       ├── ServiceModel.*          # C++ workflow controller singleton
+│   │       └── qml/
+│   │           ├── Service.qml               # SwipeView workflow container
+│   │           ├── NumericInputScreen.qml    # Reusable numeric entry screen
+│   │           ├── ScreenInputString.qml     # String entry step
+│   │           ├── ScreenInputNumber.qml     # Number entry step
+│   │           ├── ScreenInputPhone.qml      # Phone entry step
+│   │           ├── ScreenInputIban.qml       # IBAN entry step
+│   │           ├── ScreenInputCardNumber.qml # Card number entry step
+│   │           ├── ScreenInsertCash.qml      # Cash insertion step
+│   │           └── Screen3.qml              # Confirmation / receipt step
+│   └── translations/            # Qt Linguist translation files
+│       ├── sst_en.ts / .qm      # English
+│       ├── sst_ru.ts / .qm      # Russian
+│       └── sst_ky.ts / .qm      # Kyrgyz
+├── tests/                       # Automated test suite
+│   ├── cpp/                     # C++ unit tests (QtTest + QTEST_GUILESS_MAIN)
+│   │   ├── modules/hardware/    # SystemInfo & hardware logic tests
+│   │   ├── services/testservice/ # ServiceModel workflow tests
+│   │   └── tst_TranslationManager.cpp
+│   └── qml/                     # QML component tests (QtQuickTest)
+│       ├── modules/controls/    # Control component UI tests
+│       ├── modules/hardware/    # Hardware QML component tests
+│       ├── services/testservice/ # Service QML flow tests
+│       └── tst_Main.qml
+├── doc/                         # Documentation
+│   ├── ARCHITECTURE.md          # Architectural design document
+│   └── CONTRIBUTING.md          # Setup, coding, and localization guidelines
 └── README.md
 ```
 
@@ -144,6 +228,21 @@ make -j$(nproc)
   ```bash
   ./SelfServiceTerminal --kiosk
   ```
+
+---
+
+## Keyboard Shortcuts
+
+All shortcuts are global and active while the application window is focused.
+
+| Shortcut | Context | Description |
+|----------|---------|-------------|
+| `Ctrl+X` | Global | Quit the application immediately |
+| `Ctrl+G` | Home screen | Toggle the **Style Configurator** window (live theme editor) |
+| `Ctrl+A` | Home screen | Toggle **Attract Mode** — starts the idle animation; press again to stop it |
+| `Ctrl+E` | Home screen | Toggle the **Validator Emulator** debug window (visible only when `USE_DEVICE_EMULATOR` is active) |
+
+> **Note**: `Ctrl+X` is defined at the root `Window` level in `Main.qml`. All other shortcuts are defined inside `Home.qml`.
 
 ---
 
